@@ -3,7 +3,7 @@
 ## Milestone 0 — prototype
 - [x] Responsive dashboard shell
 - [x] Product creation, editing and deletion
-- [x] Manual order entry
+- [x] Manual order entry and cancellation with inventory restoration
 - [x] Customer summary
 - [x] Printable invoice
 - [x] Local browser persistence
