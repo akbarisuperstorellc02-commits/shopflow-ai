@@ -6,3 +6,5 @@
 
 .list-toolbar{display:flex;gap:10px;align-items:center;margin:0 0 14px}.list-toolbar input{flex:1;min-width:0;border:1px solid var(--line);background:#fff;border-radius:9px;padding:11px 13px;font:inherit;font-size:12px;color:var(--ink)}.secondary-button{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:9px;padding:10px 13px;font:inherit;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}.secondary-button:hover{border-color:var(--purple);color:var(--purple)}
 @media(max-width:420px){.list-toolbar{align-items:stretch;flex-direction:column}.secondary-button{align-self:flex-end}}
+
+.field-help{font-size:10px;color:#85879a;font-weight:400}.logo-preview{width:92px;height:92px;object-fit:contain;border:1px solid var(--line);border-radius:12px;padding:7px;background:#fff}.rtl .settings-form label{text-align:right}
