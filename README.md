@@ -5,6 +5,13 @@ A responsive, browser-based seller workspace prototype.
 ## Run locally
 Open `index.html` in a modern browser. No build step or API key is required.
 
+## Languages
+- English (left-to-right)
+- Afghan Dari (right-to-left)
+- Pashto (right-to-left)
+- Language choice is saved in the current browser and restored on return.
+- Dashboard, navigation, forms, notifications, tables, and printable invoices are localized. Product/customer text entered by the seller remains as entered.
+
 ## Included in this first prototype
 - Overview dashboard and basic sales metrics
 - Product catalog creation
