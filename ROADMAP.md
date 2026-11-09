@@ -25,6 +25,8 @@
 - [ ] Public store page
 - [ ] Customer order form
 - [ ] Inventory and low-stock alerts
-- [ ] CSV export
+- [x] CSV export
+- [x] Date-range financial reports and sales trend chart
+- [x] Gross-profit CSV export with unknown historical costs kept blank
 - [ ] Branded invoice PDF
 - [ ] Billing only after payment-provider eligibility is verified
