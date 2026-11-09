@@ -16,3 +16,5 @@
 .backup-panel{margin-top:14px;max-width:540px}.backup-actions{display:flex;gap:10px;flex-wrap:wrap}.backup-panel .report-footnote{margin-bottom:0}
 
 .product-actions{display:flex;gap:12px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.product-actions .text-button{padding:3px 0}.danger-text{color:#c14e4e}
+
+.pill-cancelled{background:#f1f1f5;color:#77798d}
