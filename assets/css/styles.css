@@ -8,3 +8,5 @@
 @media(max-width:420px){.list-toolbar{align-items:stretch;flex-direction:column}.secondary-button{align-self:flex-end}}
 
 .field-help{font-size:10px;color:#85879a;font-weight:400}.logo-preview{width:92px;height:92px;object-fit:contain;border:1px solid var(--line);border-radius:12px;padding:7px;background:#fff}.rtl .settings-form label{text-align:right}
+
+.financial-grid{margin-top:14px}.financial-grid .stat-card{min-height:150px}.financial-grid .stat-card strong{font-size:clamp(20px,2.5vw,28px)}.financial-grid .stat-card small{max-width:90%;line-height:1.5}.field-help{display:block}
