@@ -18,7 +18,8 @@ Open `index.html` in a modern browser. No build step or API key is required.
 - Daily/monthly sales trend chart and financial CSV export; unknown historical costs remain blank
 - Product catalog create, edit and delete controls with optional stock tracking and low-stock indicators
 - Optional purchase costs so unknown cost is never silently recorded as zero
-- Manual order entry with automatic stock deduction and insufficient-stock protection
+- Manual order entry with automatic stock deduction, insufficient-stock protection, and order cancellation with stock restoration
+- Cancelled orders remain in history but are excluded from sales and profit totals
 - Product and order search
 - CSV export for products and orders
 - Customer list derived from orders
