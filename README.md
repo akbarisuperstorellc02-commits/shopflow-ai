@@ -14,6 +14,8 @@ Open `index.html` in a modern browser. No build step or API key is required.
 
 ## Included in this first prototype
 - Overview dashboard and basic sales metrics
+- Date-range financial reports with revenue, order count, known costs, gross profit and average order value
+- Daily/monthly sales trend chart and financial CSV export; unknown historical costs remain blank
 - Product catalog creation with stock quantity and low-stock indicators
 - Manual order entry with automatic stock deduction and insufficient-stock protection
 - Product and order search
@@ -24,7 +26,7 @@ Open `index.html` in a modern browser. No build step or API key is required.
 - Browser localStorage persistence
 
 ## Important limitations
-This is a single-browser demo, not a production SaaS. Data is stored locally in the browser and is not synced across devices or users. There is no authentication, shared database, online checkout, server-side authorization, or AI integration yet. Do not enter sensitive customer information.
+This is a single-browser demo, not a production SaaS. Data is stored locally in the browser and is not synced across devices or users. There is no authentication, shared database, online checkout, server-side authorization, or AI integration yet. Financial reporting is limited to data entered in this browser; gross profit is not net profit and does not account for overhead, taxes, shipping, refunds or payment fees. Do not enter sensitive customer information.
 
 ## Roadmap
 1. Validate workflows with 3–5 small sellers.
