@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ShopFlow — a simple order and product workspace for independent sellers.">
+<title>ShopFlow — Seller workspace</title><link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<div class="app-shell">
+<aside class="sidebar">
+<a class="brand" href="#"><span class="brand-mark">S</span><span>shopflow<span class="brand-dot">.</span><small>SELLER WORKSPACE</small></span></a>
+<div class="workspace"><span class="avatar">M</span><span><b>My Store</b><small>Free workspace</small></span><span class="chevron">⌄</span></div>
+<nav>
+<p class="nav-label">WORKSPACE</p>
+<button class="nav-item active" data-view="overview">▦ <span>Overview</span></button>
+<button class="nav-item" data-view="products">▧ <span>Products</span></button>
+<button class="nav-item" data-view="orders">☷ <span>Orders</span><i id="order-count">0</i></button>
+<button class="nav-item" data-view="customers">♙ <span>Customers</span></button>
+<p class="nav-label tools-label">TOOLS</p>
+<button class="nav-item" data-view="invoices">▤ <span>Invoices</span></button>
+<button class="nav-item" data-view="settings">⚙ <span>Store settings</span></button>
+</nav>
+<div class="sidebar-bottom"><div class="help-icon">?</div><div><b>Need a hand?</b><small>Seller help center</small></div></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><span class="eyebrow">YOUR BUSINESS AT A GLANCE</span><h1 id="page-title">Overview</h1></div><div class="top-actions"><span class="status"><i></i> All changes saved</span><span class="user-avatar">M</span></div></header>
+<section id="view-overview" class="view">
+<div class="welcome"><div><span class="welcome-kicker">YOUR STORE, SIMPLIFIED</span><h2>Good things are<br><em>in motion.</em></h2><p>Here’s what’s happening with your store today.</p></div><div class="welcome-art"><div class="art-circle"></div><div class="art-card card-one">↗ <b>Stay organized</b><small>Track your sales</small></div><div class="art-card card-two">✓ <b>One workspace</b><small>Products and orders</small></div><div class="art-spark">✳</div></div></div>
+<div class="section-heading"><div><h3>Your performance</h3><p>A little progress adds up.</p></div><span class="period">All time</span></div>
+<div class="stats-grid">
+<article class="stat-card"><span>Total revenue</span><strong id="stat-revenue">$0.00</strong><small class="positive">Based on recorded orders</small><div class="stat-icon purple">$</div></article>
+<article class="stat-card"><span>Orders</span><strong id="stat-orders">0</strong><small>All orders received</small><div class="stat-icon orange">☷</div></article>
+<article class="stat-card"><span>Products</span><strong id="stat-products">0</strong><small>In your catalog</small><div class="stat-icon green">▧</div></article>
+<article class="stat-card"><span>Customers</span><strong id="stat-customers">0</strong><small>Unique buyers</small><div class="stat-icon blue">♙</div></article>
+</div>
+<div class="content-grid"><article class="panel"><div class="panel-head"><div><h3>Recent orders</h3><p>Your latest customer activity</p></div><button class="text-button" data-go="orders">View all →</button></div><div id="recent-orders" class="table-wrap"></div></article>
+<article class="panel quick-panel"><div class="panel-head"><div><h3>Quick actions</h3><p>Keep your store moving</p></div></div><button class="quick-action" data-modal="product"><span class="quick-icon lavender">＋</span><span><b>Add a product</b><small>Grow your catalog</small></span><span class="arrow">→</span></button><button class="quick-action" data-modal="order"><span class="quick-icon peach">↗</span><span><b>Create an order</b><small>Record a new sale</small></span><span class="arrow">→</span></button><button class="quick-action" data-go="invoices"><span class="quick-icon mint">▤</span><span><b>Make an invoice</b><small>Prepare a customer receipt</small></span><span class="arrow">→</span></button></article></div>
+</section>
+<section id="view-products" class="view hidden"><div class="section-heading"><div><h3>Product catalog</h3><p>Keep your products and prices organized.</p></div><button class="primary-button" data-modal="product">＋ Add product</button></div><div id="products-list" class="product-grid"></div></section>
+<section id="view-orders" class="view hidden"><div class="section-heading"><div><h3>All orders</h3><p>Track the sales coming into your store.</p></div><button class="primary-button" data-modal="order">＋ Create order</button></div><div class="panel"><div id="orders-list" class="table-wrap"></div></div></section>
+<section id="view-customers" class="view hidden"><div class="section-heading"><div><h3>Customers</h3><p>People who have ordered from your store.</p></div></div><div class="panel"><div id="customers-list" class="table-wrap"></div></div></section>
+<section id="view-invoices" class="view hidden"><div class="section-heading"><div><h3>Invoices</h3><p>Print a simple receipt for a recorded order.</p></div></div><div class="panel"><p class="empty-note">Choose an order from the Orders page, then use Print invoice. Your browser can save it as a PDF.</p></div></section>
+<section id="view-settings" class="view hidden"><div class="section-heading"><div><h3>Store settings</h3><p>Customize the details shown on your invoices.</p></div></div><form id="settings-form" class="panel settings-form"><label>Store name<input id="store-name" value="My Store" maxlength="50"></label><label>Contact email<input id="store-email" type="email" placeholder="hello@example.com"></label><label>Currency<select id="store-currency"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — British Pound</option><option value="AFN">AFN — Afghan Afghani</option></select></label><button class="primary-button">Save settings</button></form></section>
+<footer>ShopFlow starter · Demo data stays in this browser.</footer>
+</main></div>
+<dialog id="product-modal"><form method="dialog" id="product-form" class="modal-form"><button class="close" aria-label="Close">×</button><span class="eyebrow">YOUR CATALOG</span><h2>Add a product</h2><label>Product name<input id="product-name" required maxlength="80" placeholder="e.g. Everyday tote bag"></label><label>Price<input id="product-price" type="number" min="0.01" step="0.01" required placeholder="24.00"></label><label>Short description<input id="product-description" maxlength="120" placeholder="A few words about this item"></label><button class="primary-button">Save product</button></form></dialog>
+<dialog id="order-modal"><form method="dialog" id="order-form" class="modal-form"><button class="close" aria-label="Close">×</button><span class="eyebrow">NEW SALE</span><h2>Create an order</h2><label>Customer name<input id="customer-name" required maxlength="80" placeholder="Customer name"></label><label>Product<select id="order-product" required></select></label><label>Quantity<input id="order-quantity" type="number" min="1" max="999" value="1" required></label><button class="primary-button">Save order</button></form></dialog>
+<div id="toast" role="status" class="toast"></div><script src="assets/js/app.js"></script>
+</body></html>
