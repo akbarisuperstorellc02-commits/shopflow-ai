@@ -14,8 +14,10 @@ Open `index.html` in a modern browser. No build step or API key is required.
 
 ## Included in this first prototype
 - Overview dashboard and basic sales metrics
-- Product catalog creation
-- Manual order entry
+- Product catalog creation with stock quantity and low-stock indicators
+- Manual order entry with automatic stock deduction and insufficient-stock protection
+- Product and order search
+- CSV export for products and orders
 - Customer list derived from orders
 - Printable invoices (use the browser's Save as PDF option)
 - Store name, contact email and currency settings
