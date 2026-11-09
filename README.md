@@ -16,7 +16,8 @@ Open `index.html` in a modern browser. No build step or API key is required.
 - Overview dashboard and basic sales metrics
 - Date-range financial reports with revenue, order count, known costs, gross profit and average order value
 - Daily/monthly sales trend chart and financial CSV export; unknown historical costs remain blank
-- Product catalog creation with stock quantity and low-stock indicators
+- Product catalog create, edit and delete controls with optional stock tracking and low-stock indicators
+- Optional purchase costs so unknown cost is never silently recorded as zero
 - Manual order entry with automatic stock deduction and insufficient-stock protection
 - Product and order search
 - CSV export for products and orders
