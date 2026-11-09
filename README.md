@@ -19,8 +19,8 @@ Open `index.html` in a modern browser. No build step or API key is required.
 - Product and order search
 - CSV export for products and orders
 - Customer list derived from orders
-- Printable invoices (use the browser's Save as PDF option)
-- Store name, contact email and currency settings
+- Branded, A4-ready printable invoices with store logo and contact details (use the browser's Save as PDF option)
+- Store name, contact email, phone, address, logo upload and currency settings
 - Browser localStorage persistence
 
 ## Important limitations
@@ -30,7 +30,7 @@ This is a single-browser demo, not a production SaaS. Data is stored locally in 
 1. Validate workflows with 3–5 small sellers.
 2. Add a secure backend, authentication, and per-store data isolation.
 3. Add shareable public storefronts and customer order forms.
-4. Add CSV export, inventory tracking, and invoice branding.
+4. Validate invoice branding and improve print layouts.
 5. Add optional AI copywriting only after customer demand is validated.
 6. Add a payment provider only after confirming it supports the operator's country and business setup.
 
