@@ -24,9 +24,10 @@ Open `index.html` in a modern browser. No build step or API key is required.
 - Branded, A4-ready printable invoices with store logo and contact details (use the browser's Save as PDF option)
 - Store name, contact email, phone, address, logo upload and currency settings
 - Browser localStorage persistence
+- Downloadable JSON backup and validated restore workflow
 
 ## Important limitations
-This is a single-browser demo, not a production SaaS. Data is stored locally in the browser and is not synced across devices or users. There is no authentication, shared database, online checkout, server-side authorization, or AI integration yet. Financial reporting is limited to data entered in this browser; gross profit is not net profit and does not account for overhead, taxes, shipping, refunds or payment fees. Do not enter sensitive customer information.
+This is a single-browser demo, not a production SaaS. Data is stored locally in the browser and is not synced across devices or users. There is no authentication, shared database, online checkout, server-side authorization, or AI integration yet. Backups are manual JSON files; keep them in a safe location because they may contain customer and sales data. Financial reporting is limited to data entered in this browser; gross profit is not net profit and does not account for overhead, taxes, shipping, refunds or payment fees. Do not enter sensitive customer information.
 
 ## Roadmap
 1. Validate workflows with 3–5 small sellers.
