@@ -18,7 +18,8 @@
 - [ ] Choose supported hosting and database regions
 - [ ] Add authentication
 - [ ] Enforce store-level row access
-- [ ] Add migrations, backups, and error monitoring
+- [ ] Add migrations and error monitoring
+- [x] Add manual local JSON backup and restore
 - [ ] Add privacy policy and terms
 
 ## Milestone 3 — sellable product
