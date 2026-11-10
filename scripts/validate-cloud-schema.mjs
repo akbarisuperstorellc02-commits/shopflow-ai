@@ -39,6 +39,12 @@ assert.match(cloudClient, /local-import: stock values are the current inventory 
 assert.match(cloudClient, /saveMap\(map\); \/\//i);
 assert.match(cloudClient, /create_order_atomic/i);
 assert.match(cloudClient, /cancel_order_atomic/i);
+assert.match(cloudClient, /upsertCloudProduct/i);
+assert.match(cloudClient, /deleteCloudProduct/i);
+assert.match(cloudClient, /saveCloudSettings/i);
+assert.match(appClient, /ShopFlowCloud\.upsertProduct/i);
+assert.match(appClient, /ShopFlowCloud\.deleteProduct/i);
+assert.match(appClient, /ShopFlowCloud\.saveSettings/i);
 assert.match(appClient, /window\.ShopFlowBridge=\{/i);
 assert.match(appClient, /ShopFlowCloud\.createOrder/i);
 assert.match(appClient, /ShopFlowCloud\.cancelOrder/i);
