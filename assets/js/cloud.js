@@ -190,12 +190,20 @@ async function pullCloudData() {
     client.from('store_settings').select('settings').eq('store_id', storeId).maybeSingle()
   ]);
   for (const result of [productResult, orderResult, settingsResult]) if (result.error) throw result.error;
+  const existingLocal = window.ShopFlowBridge.exportData().products || [];
+  const usedLocalIds = new Set(existingLocal.map(product => String(product.id)));
+  let nextLocalId = Date.now();
   const products = (productResult.data || []).map(row => {
-    const localId = reverseProducts.get(row.id) || row.id;
+    let localId = reverseProducts.get(row.id);
+    if (!localId) {
+      while (usedLocalIds.has(String(nextLocalId))) nextLocalId += 1;
+      localId = String(nextLocalId++);
+      usedLocalIds.add(localId);
+    }
     map[storeId + ':product:' + String(localId)] = row.id;
     reverseProducts.set(row.id, String(localId));
     return {
-      id: localId, cloudId: row.id,
+      id: Number(localId), cloudId: row.id,
       name: row.name, price: Number(row.price) || 0,
       cost: row.cost === null ? null : Number(row.cost),
       stock: row.stock === null ? null : Number(row.stock),
@@ -213,7 +221,7 @@ async function pullCloudData() {
     map[storeId + ':order:' + String(localId)] = row.id;
     orders.push({
       id: localId, cloudOrder: true, customer: row.customer_name,
-      product: line.product_name || 'Product', productId: localProductId,
+      product: line.product_name || 'Product', productId: /^\\d+$/.test(String(localProductId)) ? Number(localProductId) : null,
       quantity: Number(line.quantity) || 1, total: Number(row.subtotal) || 0,
       costTotal: row.cost_total === null ? null : Number(row.cost_total),
       date: new Date(row.sold_at).toLocaleDateString('en-US'),
