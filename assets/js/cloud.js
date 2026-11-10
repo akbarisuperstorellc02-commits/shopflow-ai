@@ -190,14 +190,18 @@ async function pullCloudData() {
     client.from('store_settings').select('settings').eq('store_id', storeId).maybeSingle()
   ]);
   for (const result of [productResult, orderResult, settingsResult]) if (result.error) throw result.error;
-  const products = (productResult.data || []).map(row => ({
-    id: reverseProducts.get(row.id) || row.id,
-    cloudId: row.id,
-    name: row.name, price: Number(row.price) || 0,
-    cost: row.cost === null ? null : Number(row.cost),
-    stock: row.stock === null ? null : Number(row.stock),
-    description: row.description || ''
-  }));
+  const products = (productResult.data || []).map(row => {
+    const localId = reverseProducts.get(row.id) || row.id;
+    map[storeId + ':product:' + String(localId)] = row.id;
+    reverseProducts.set(row.id, String(localId));
+    return {
+      id: localId, cloudId: row.id,
+      name: row.name, price: Number(row.price) || 0,
+      cost: row.cost === null ? null : Number(row.cost),
+      stock: row.stock === null ? null : Number(row.stock),
+      description: row.description || ''
+    };
+  });
   const orders = [];
   let skippedMultiLine = 0;
   for (const row of orderResult.data || []) {
@@ -206,6 +210,7 @@ async function pullCloudData() {
     const line = lines[0];
     const localProductId = reverseProducts.get(line.product_id) || line.product_id;
     const localId = reverseOrders.get(row.id) || row.id;
+    map[storeId + ':order:' + String(localId)] = row.id;
     orders.push({
       id: localId, cloudOrder: true, customer: row.customer_name,
       product: line.product_name || 'Product', productId: localProductId,
