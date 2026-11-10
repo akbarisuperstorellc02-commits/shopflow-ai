@@ -1,45 +1,47 @@
-# ShopFlow roadmap
+# ShopFlow roadmap and delivery status
 
-## Milestone 0 — local MVP
+## Milestone 0 — local seller MVP <complete>
 - [x] Responsive dashboard
-- [x] Product create/edit/delete
+- [x] Product create/edit/delete and stock tracking
 - [x] Manual order entry and cancellation with local inventory restoration
 - [x] Customer summary and printable invoice
-- [x] Browser persistence and JSON backup/restore
-- [x] English, Afghan Dari and Pashto
+- [x] Store settings and browser persistence
+- [x] JSON backup/restore with validation
+- [x] English, Afghan Dari and Pashto interfaces
 - [x] Financial reports and CSV exports
+- [x] Static GitHub Pages deployment and CI source checks
 
-## Milestone 1 — customer validation
+## Milestone 1 — customer validation <not started>
 - [ ] Interview 5 independent sellers
 - [ ] Observe their current order/inventory workflow
 - [ ] Confirm the most painful repetitive task
 - [ ] Test willingness to pay before adding paid infrastructure
 
-## Milestone 2 — cloud foundation
+## Milestone 2 — optional cloud foundation <code complete; live validation pending>
 - [x] Tenant-scoped PostgreSQL schema and RLS policies
 - [x] Atomic first-store creation RPC
 - [x] Supabase email authentication UI
 - [x] Explicit one-way local-to-cloud initial import
 - [x] Transactional create/cancel order RPCs with stock row locking
-- [x] Connect cloud-mode browser order/cancel actions to transactional RPCs
-- [x] Sync cloud-mode product create/edit/delete and store-setting updates to the selected store
-- [x] Load cloud account labels/translations on first launch (not only after restoring a backup)
+- [x] Cloud-mode browser order/cancel actions use transactional RPCs
+- [x] Product create/edit/delete and store-setting uploads
 - [x] Explicit manual cloud-to-browser pull for products, single-item orders and settings
+- [ ] Apply migrations to an operator-owned live Supabase project
+- [ ] Verify RLS isolation with two unrelated accounts
+- [ ] Run live concurrency, stock and duplicate-submission tests
 - [ ] Automatic/realtime sync, deletion propagation and conflict resolution
 - [ ] Invitation workflow and role-management UI
-- [ ] Live two-account RLS and concurrency tests
-- [ ] Backups, monitoring, privacy policy and terms
+- [ ] Production backups, monitoring, account recovery and reviewed privacy/terms documents
 
-## Milestone 3 — sellable product
+## Milestone 3 — commercial hosted product <not started>
 - [ ] Public storefront and customer order form
 - [ ] Branded downloadable invoice PDF
 - [ ] Reliable email notifications
 - [ ] Billing after provider eligibility is verified
 - [ ] AI features after demand and operating costs are validated
 
-## Release gates
-- [ ] Two-account RLS isolation tests pass
-- [ ] Concurrent order/stock tests pass
-- [ ] Mobile and desktop end-to-end tests pass
-- [ ] Data export, deletion and recovery flows verified
-- [ ] Privacy, terms and support contact published
+## Release status
+
+The local-first browser MVP is published and its configured GitHub Actions build/deployment checks pass. This is not equivalent to production certification or live cloud validation. The optional cloud foundation is present in source but must be configured and tested in an actual Supabase project before real customer data is used.
+
+See [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md), [SECURITY.md](SECURITY.md) and [DATA_HANDLING.md](DATA_HANDLING.md) for the exact operational requirements.
