@@ -67,6 +67,34 @@ create index if not exists orders_store_sold_idx
 create index if not exists orders_store_status_idx
   on public.orders (store_id, status);
 
+-- Audit actor fields are server-stamped so browser clients cannot impersonate
+-- another user in created_by metadata.
+create or replace function public.stamp_created_by()
+returns trigger
+language plpgsql
+set search_path = ''
+as $
+begin
+  if tg_op = 'INSERT' then
+    new.created_by := auth.uid();
+  elsif new.created_by is distinct from old.created_by then
+    raise exception 'created_by is immutable';
+  end if;
+  return new;
+end;
+$;
+
+drop trigger if exists products_stamp_created_by on public.products;
+create trigger products_stamp_created_by
+before insert or update on public.products
+for each row execute function public.stamp_created_by();
+
+drop trigger if exists orders_stamp_created_by on public.orders;
+create trigger orders_stamp_created_by
+before insert or update on public.orders
+for each row execute function public.stamp_created_by();
+
+
 create table if not exists public.store_settings (
   store_id uuid primary key references public.stores(id) on delete cascade,
   settings jsonb not null default '{}'::jsonb
