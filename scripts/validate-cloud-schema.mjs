@@ -4,7 +4,7 @@ import { strict as assert } from 'node:assert';
 const migration = readFileSync('supabase/migrations/0001_initial_schema.sql', 'utf8');
 const catalogTests = readFileSync('supabase/tests/0001_rls_catalog_checks.sql', 'utf8');
 const transactional = readFileSync('supabase/migrations/0002_transactional_inventory.sql', 'utf8');
-const cloudClient = readFileSync('assets/js/cloud.js', 'utf8');
+const cloudClient = readFileSync('assets/js/cloud.js', 'utf8');\nconst appClient = readFileSync('assets/js/app.js', 'utf8');
 
 const requiredTables = ['stores', 'store_members', 'products', 'orders', 'store_settings'];
 for (const table of requiredTables) {
