@@ -1,73 +1,48 @@
 # Supabase backend foundation
 
-This folder contains the first database/security layer for moving ShopFlow from a
-single-browser prototype toward a multi-user product.
+ShopFlow includes an optional browser connection to Supabase. The current cloud features are email authentication, listing/creating stores, and an explicit one-way import of local products, orders and settings. This is not continuous multi-device sync.
 
-## Important status
+## Configure a new Supabase project
 
-The live GitHub Pages app is **still local-only**. This SQL migration is a
-prepared backend foundation; it does not turn on sign-in, cloud sync, or
-multi-device access in the current UI. Do not promise customers that data is
-cloud-backed until the frontend integration and end-to-end tests are complete.
+1. Create a Supabase project.
+2. Open the SQL Editor.
+3. Apply \`migrations/0001_initial_schema.sql\`.
+4. Apply \`migrations/0002_transactional_inventory.sql\`.
+5. Run \`tests/0001_rls_catalog_checks.sql\`. This checks schema and policy metadata; it does not replace tests with two real accounts.
+6. In Authentication → Providers, enable email sign-in and choose the email-confirmation policy.
+7. In Authentication → URL Configuration, add the deployed GitHub Pages URL to allowed redirect URLs.
+8. In Project Settings → API, copy the project URL and the publishable key (or legacy anon key).
 
-## Apply to a new Supabase project
+In the app, open Settings, enter the project URL and public key, connect, then create an account or sign in. Create a cloud store, then explicitly import the local browser data.
 
-1. Create a Supabase project in a region suitable for the intended customers.
-2. Open **SQL Editor** in that project.
-3. Review and run `migrations/0001_initial_schema.sql`.
-4. Run `tests/0001_rls_catalog_checks.sql` and confirm it completes without an exception.\n5. Apply `migrations/0002_transactional_inventory.sql` after migration 0001. This adds atomic create/cancel order RPCs that lock product rows while adjusting stock. This checks policy/RLS metadata only; it does not replace live cross-account tests.
-5. In **Authentication → Providers**, enable Email sign-in and configure the
-   confirmation and password-reset URLs for the production domain.
-6. In **Authentication → URL Configuration**, add the deployed app URL and
-   the local development URL to the allowed redirect URLs.
-7. In **Project Settings → API**, the project URL and publishable/anon key may
-   be used by a browser client only after RLS is enabled and tested.
-8. Never put the `service_role` key, database password, or any secret key in
-   browser JavaScript, GitHub Pages, a public repository, or a screenshot.
+**Never use or publish a service_role or sb_secret key in the browser.** The client rejects known secret key formats. Public keys are safe to expose only when the database RLS policies are correctly enabled and tested.
 
-## Data model
+## Database model
 
-- `stores`: one tenant/workspace.
-- `store_members`: membership and owner/admin/staff roles.
-- `products`: tenant-scoped catalog and optional stock/cost.
-- `orders`: tenant-scoped sales with JSON line-item snapshots.
-- `store_settings`: tenant-scoped settings.
+- \`stores\`: tenant/workspace records.
+- \`store_members\`: owner/admin/staff membership.
+- \`products\`: tenant-scoped catalog, cost and optional stock.
+- \`orders\`: tenant-scoped orders with immutable line-item snapshots.
+- \`store_settings\`: tenant-scoped store preferences.
 
-The `create_store(name)` RPC atomically creates a store, its owner membership,
-and an empty settings row for the signed-in user. The client cannot insert or
-modify memberships directly. This prevents self-joining another store or
-self-promoting a role. An invitation flow must be added as a separately
-reviewed server-side function before team invitations are enabled.
+The \`create_store(store_name)\` RPC creates the store, owner membership and settings row atomically. Membership writes are intentionally unavailable to browser clients; team invitations require a separately reviewed server-side workflow.
 
-## Security model
+## Security and inventory
 
-Row Level Security is enabled on every application table. There are no anon
-or public read policies. Members can read only their own store's records.
-Only owners/admins can manage catalog and settings. Members can create orders;
-only managers can edit or delete them. Store membership writes are intentionally
-blocked for browser clients.
+RLS is enabled on every application table. Members can read only stores where they are members. Only owners/admins can manage products and settings. Members can create orders; only managers can update/cancel them.
 
-Before production, test with at least two unrelated accounts and verify that
-neither can select, insert, update, or delete the other's store data. Also test
-unauthenticated access, role changes, account deletion, and recovery flows.
+Migration 0002 adds \`create_order_atomic\` and \`cancel_order_atomic\`. These functions lock rows while adjusting stock to prevent overselling under concurrent transactions. The current browser order form is still local-only and has not yet been connected to these RPCs.
 
-## Frontend cloud controls\n\nThe Settings page has an optional Supabase connection panel. It supports email/password sign-in and sign-up, listing the user's stores, creating a first store with `create_store(name)`, and explicitly importing the current browser's products, orders and settings. Local data is not deleted. The public project URL and publishable/anon key are stored in this browser; passwords are not persisted by the app. Never enter a service-role key.\n\nThe import is currently one-way and manual. It is not a live synchronization engine: changes made after import are not automatically sent to Supabase, and cloud changes are not automatically downloaded to devices. Imported data can be re-uploaded using stable per-store IDs.\n\n## Current migration limitations
+Imported order rows are tagged with \`local-import:\` notes because the imported product stock is already the current inventory snapshot. Cancelling imported historical orders therefore must not add their quantities back to that snapshot.
 
-- This is a foundation, not a complete production backend.
-- Inventory deduction/restoration must move into a transactional database RPC
-  before concurrent users can safely create/cancel orders. The current local
-  JavaScript stock checks are not concurrency-safe across devices.
-- The frontend has not yet been wired to this schema.
-- Email delivery, rate limits, backups, monitoring, data retention, privacy
-  policy, and operational support still need configuration.
-- Public storefronts, payment processing, invitations, and AI services are not
-  enabled by this migration.
+## Current limitations
 
-## Required next implementation steps
+- Cloud import is manual and one-way; local changes after import are not automatically uploaded.
+- Cloud changes are not downloaded to other devices.
+- The current order form and cancellation UI still operate on local browser data.
+- Team invitations and role-management UI are not implemented.
+- Cross-account RLS tests, concurrency tests and browser end-to-end tests have not been run against a live Supabase project.
+- Backups, monitoring, privacy policy, terms, support and account-recovery operations need production setup.
+- Public storefronts, payments, billing and AI features are not enabled.
 
-1. Add Supabase Auth UI and a safe session lifecycle.
-2. Add a cloud repository adapter and an explicit local-to-cloud import flow.
-3. Implement transactional create/cancel order RPCs with stock locking.
-4. Add store switching and invitation-based membership management.
-5. Add automated cross-tenant/RLS tests and browser end-to-end tests.
-6. Only then offer cloud sync to real stores.
+Do not use real customer data until the migrations are applied to a real project and isolation has been tested with at least two unrelated accounts.
