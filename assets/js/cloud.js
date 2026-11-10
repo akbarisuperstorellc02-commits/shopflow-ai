@@ -341,7 +341,7 @@ $('cloud-pull')?.addEventListener('click', async () => {
     const data = await pullCloudData();
     if (!window.ShopFlowBridge?.mergeCloudData) throw new Error('The app is not ready to receive cloud data.');
     window.ShopFlowBridge.mergeCloudData(data);
-    message(data.skippedMultiLine ? 'Cloud changes downloaded. ' + data.skippedMultiLine + ' multi-item orders were skipped.' : 'Cloud changes downloaded.');
+    message(window.ShopFlowBridge.cloudPullStatus(data.skippedMultiLine || 0));
   } catch (error) { message(error.message || 'Cloud download failed.', true); }
   finally { button.disabled = !cloudReady(); }
 });
