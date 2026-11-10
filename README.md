@@ -2,49 +2,60 @@
 
 A responsive seller workspace for managing products, orders, inventory, customers and financial reports.
 
-## Current release status
+## Current release
 
-The published GitHub Pages app is a **local-first MVP**, not yet a production SaaS. It stores data in the current browser's localStorage. It does not currently provide user sign-in, cloud synchronization, shared multi-device data, online checkout, or live AI services.
+The live app is a **local-first seller MVP with optional Supabase account setup and manual cloud import**. Core local workflows work without a backend. Cloud features require the user to create and configure a Supabase project.
 
-## Run locally
+- Live app: https://akbarisuperstorellc02-commits.github.io/shopflow-ai/
+- GitHub repository: https://github.com/akbarisuperstorellc02-commits/shopflow-ai
+- Deployment checks: https://github.com/akbarisuperstorellc02-commits/shopflow-ai/actions
 
-Open `index.html` in a modern browser. No build step or API key is required.
+## Features
 
-## Languages
+- Responsive seller dashboard.
+- Product creation, editing, deletion, price/cost and stock tracking.
+- Manual order entry, stock validation and cancellation/restoration.
+- Customer summaries and printable A4 invoice.
+- Store identity, contact details, logo and currency settings.
+- Search, CSV exports and financial reports.
+- English, Afghan Dari and Pashto interfaces; English digits in all languages.
+- JSON backup and restore with validation and file-size limits.
+- Local browser persistence.
+- Optional Supabase email authentication, cloud store creation and explicit one-way import of products, orders and settings.
+- PostgreSQL tenant schema, row-level security and transactional inventory RPC migrations.
 
-- English (left-to-right)
-- Afghan Dari (right-to-left)
-- Pashto (right-to-left)
-- Interface numbers remain Western/English digits.
-- Language selection is saved in the current browser.
+## Run
 
-## Included features
+Open \`index.html\` in a modern browser or visit the live GitHub Pages URL. No local build step is required for the browser MVP.
 
-- Responsive dashboard and sales overview
-- Product create/edit/delete with optional stock and purchase-cost tracking
-- Manual order entry, stock deduction, insufficient-stock protection and cancellation with stock restoration
-- Customer summaries and searchable product/order lists
-- Branded A4 printable invoices (browser Print / Save as PDF)
-- Store profile, contact details, logo and currency settings
-- Daily/monthly financial reports, revenue, known cost, gross profit and sales trend
-- CSV export for products, orders and financial reports
-- JSON backup and validated restore
-- Browser localStorage persistence
+## Enable the optional cloud features
 
-Gross profit is not net profit. Overheads, taxes, shipping, refunds and payment fees are not fully accounted for. Historical orders without a recorded purchase cost are excluded from cost/profit calculations.
+1. Create your own Supabase project.
+2. Apply \`supabase/migrations/0001_initial_schema.sql\`, then \`0002_transactional_inventory.sql\`.
+3. Run \`supabase/tests/0001_rls_catalog_checks.sql\`.
+4. Configure email authentication and the deployed URL in Supabase Auth settings.
+5. Open ShopFlow → Settings, enter the project URL and public publishable/anon key, then connect.
+6. Sign up or sign in, create a cloud store, and use the explicit import button.
 
-## Supabase account and cloud import (configuration required)
+Never use a \`service_role\` or \`sb_secret_\` key in browser code. Read [the Supabase setup and limitations guide](supabase/README.md) before using real customer data.
 
-The `supabase/` folder contains a PostgreSQL schema with tenant-scoped stores, memberships, products, orders and settings, row-level security (RLS), and a safe `create_store(name)` function.
+## Important limitations
 
-Read [Supabase setup and security notes](supabase/README.md) before applying it. **This schema is not yet connected to the live frontend.** Do not enter real customer data expecting it to sync to the cloud.
+- Cloud import is manual and one-way. It is not continuous synchronization and does not download cloud changes to other devices.
+- The current order form and cancellation UI still use local browser data; they are not yet connected to the database transaction RPCs.
+- Supabase migrations have not been applied to a live project by this repository's CI. Live cross-account and concurrency tests remain required.
+- Team invitations, public storefronts, payments, billing, email notifications and AI features are not enabled.
+- GitHub Pages is a static host; it does not provide a private server or protect secrets embedded in browser code.
 
-Never commit a Supabase `service_role` key, database password, or other secret. The UI rejects a JWT `service_role` key and only accepts a project URL plus a public publishable/anon key.
+## Project structure
 
-## Development roadmap
-
-See [ROADMAP.md](ROADMAP.md) for remaining authentication, cloud-sync, transactional inventory, team access, privacy and release gates.
+- \`assets/js/app.js\`: local seller application.
+- \`assets/js/cloud.js\`: optional Supabase auth and local-to-cloud import.
+- \`assets/css/styles.css\`: responsive UI.
+- \`supabase/migrations/\`: database schema, RLS and transactional RPCs.
+- \`supabase/tests/\`: catalog and RLS metadata checks.
+- \`scripts/validate-cloud-schema.mjs\`: CI guardrails for the cloud schema and client.
 
 ## License
 
-MIT
+No open-source license has been added yet. All rights remain with the repository owner unless a license is added.
