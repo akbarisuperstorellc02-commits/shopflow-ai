@@ -4,7 +4,7 @@ A responsive seller workspace for managing products, orders, inventory, customer
 
 ## Current release
 
-The live app is a **local-first seller MVP with optional Supabase account setup and manual cloud import**. Core local workflows work without a backend. Cloud features require the user to create and configure a Supabase project.
+The live app is a **local-first seller MVP with optional Supabase account setup and manual cloud synchronization**. Core local workflows work without a backend. Cloud features require the user to create and configure a Supabase project.
 
 - Live app: https://akbarisuperstorellc02-commits.github.io/shopflow-ai/
 - GitHub repository: https://github.com/akbarisuperstorellc02-commits/shopflow-ai
@@ -21,7 +21,7 @@ The live app is a **local-first seller MVP with optional Supabase account setup 
 - English, Afghan Dari and Pashto interfaces; English digits in all languages.
 - JSON backup and restore with validation and file-size limits.
 - Local browser persistence.
-- Optional Supabase email authentication, cloud store creation, initial data import, one-way product/settings updates and transactional cloud order creation/cancellation.
+- Optional Supabase email authentication, cloud store creation, initial data import, product/settings uploads, manual cloud downloads and transactional cloud order creation/cancellation.
 - PostgreSQL tenant schema, row-level security and transactional inventory RPC migrations.
 
 ## Run
