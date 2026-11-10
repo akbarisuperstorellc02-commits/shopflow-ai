@@ -114,7 +114,7 @@ async function importLocalData() {
   const map = loadMap();
   const productIds = new Map();
   const products = local.products.map(p => {
-    const id = uuidFor(map, 'product', p.id);
+    const id = uuidFor(map, storeId + ':product', p.id);
     productIds.set(String(p.id), id);
     return {
       id, store_id: storeId, name: String(p.name).slice(0, 160),
@@ -130,7 +130,7 @@ async function importLocalData() {
     if (error) throw new Error('Products import stopped: ' + error.message);
   }
   const orders = local.orders.map(o => {
-    const id = uuidFor(map, 'order', o.id);
+    const id = uuidFor(map, storeId + ':order', o.id);
     const quantity = Math.max(1, Number(o.quantity) || 1);
     const productId = productIds.get(String(o.productId));
     const unitPrice = quantity ? (Number(o.total) || 0) / quantity : 0;
