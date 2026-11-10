@@ -24,7 +24,7 @@
 - [x] Connect cloud-mode browser order/cancel actions to transactional RPCs
 - [x] Sync cloud-mode product create/edit/delete and store-setting updates to the selected store
 - [x] Load cloud account labels/translations on first launch (not only after restoring a backup)
-- [ ] Bidirectional sync with conflict resolution and store switching
+- [x] Explicit manual cloud-to-browser pull for products, single-item orders and settings\n- [ ] Automatic/realtime sync, deletion propagation and conflict resolution
 - [ ] Invitation workflow and role-management UI
 - [ ] Live two-account RLS and concurrency tests
 - [ ] Backups, monitoring, privacy policy and terms
