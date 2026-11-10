@@ -39,7 +39,8 @@ Imported order rows are tagged with \`local-import:\` notes because the imported
 
 - Cloud import is manual and one-way; local changes after import are not automatically uploaded.
 - Cloud changes are not downloaded to other devices.
-- The current order form and cancellation UI still operate on local browser data.
+- In cloud mode, new order creation and cancellation call the transactional RPCs; the browser also keeps a local working copy for its current UI.
+- Product create/edit/delete and store-setting changes are not synced after the initial import. Re-importing can overwrite cloud product stock with the browser's current snapshot, so do not use it as a routine sync operation.
 - Team invitations and role-management UI are not implemented.
 - Cross-account RLS tests, concurrency tests and browser end-to-end tests have not been run against a live Supabase project.
 - Backups, monitoring, privacy policy, terms, support and account-recovery operations need production setup.
