@@ -21,7 +21,7 @@ The live app is a **local-first seller MVP with optional Supabase account setup 
 - English, Afghan Dari and Pashto interfaces; English digits in all languages.
 - JSON backup and restore with validation and file-size limits.
 - Local browser persistence.
-- Optional Supabase email authentication, cloud store creation and explicit one-way import of products, orders and settings.
+- Optional Supabase email authentication, cloud store creation, initial data import, one-way product/settings updates and transactional cloud order creation/cancellation.
 - PostgreSQL tenant schema, row-level security and transactional inventory RPC migrations.
 
 ## Run
@@ -43,7 +43,7 @@ Never use a \`service_role\` or \`sb_secret_\` key in browser code. Read [the Su
 
 - Cloud import is manual and one-way. It is not continuous synchronization and does not download cloud changes to other devices.
 - When connected to Supabase with a selected cloud store, new sales and cancellations use transactional database RPCs; the browser keeps a local working copy. Without a cloud connection, the app continues in local-only mode.
-- Product create/edit/delete and store-setting changes are still local-only after the initial import. There is no automatic or bidirectional sync.
+- Product create/edit/delete, store-setting updates, and new sales/cancellations sync from this browser to the selected cloud store when connected. Cloud-side changes made elsewhere are not automatically downloaded; full bidirectional multi-device sync is not implemented.
 - Supabase migrations have not been applied to a live project by this repository's CI. Live cross-account and concurrency tests remain required.
 - Team invitations, public storefronts, payments, billing, email notifications and AI features are not enabled.
 - GitHub Pages is a static host; it does not provide a private server or protect secrets embedded in browser code.
