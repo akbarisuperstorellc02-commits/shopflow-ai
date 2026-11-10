@@ -7,6 +7,7 @@ const rpcTests = readFileSync('supabase/tests/0002_transactional_rpc_checks.sql'
 const transactional = readFileSync('supabase/migrations/0002_transactional_inventory.sql', 'utf8');
 const cloudClient = readFileSync('assets/js/cloud.js', 'utf8');
 const appClient = readFileSync('assets/js/app.js', 'utf8');
+const html = readFileSync('index.html', 'utf8');
 
 const requiredTables = ['stores', 'store_members', 'products', 'orders', 'store_settings'];
 for (const table of requiredTables) {
@@ -46,7 +47,7 @@ assert.match(cloudClient, /pullCloudData/i);
 assert.match(cloudClient, /\.from\('products'\)\.select/i);
 assert.match(cloudClient, /\.from\('orders'\)\.select/i);
 assert.match(appClient, /mergeCloudData:data=>/i);
-assert.match(appClient, /id="cloud-pull"/i);
+assert.match(html, /id="cloud-pull"/i);
 
 assert.match(appClient, /ShopFlowCloud\.upsertProduct/i);
 assert.match(appClient, /ShopFlowCloud\.deleteProduct/i);
