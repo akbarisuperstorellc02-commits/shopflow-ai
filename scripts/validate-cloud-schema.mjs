@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { strict as assert } from 'node:assert';
 
 const migration = readFileSync('supabase/migrations/0001_initial_schema.sql', 'utf8');
-const catalogTests = readFileSync('supabase/tests/0001_rls_catalog_checks.sql', 'utf8');\nconst transactional = readFileSync('supabase/migrations/0002_transactional_inventory.sql', 'utf8');\nconst cloudClient = readFileSync('assets/js/cloud.js', 'utf8');
+const catalogTests = readFileSync('supabase/tests/0001_rls_catalog_checks.sql', 'utf8');
+const transactional = readFileSync('supabase/migrations/0002_transactional_inventory.sql', 'utf8');
+const cloudClient = readFileSync('assets/js/cloud.js', 'utf8');
 
 const requiredTables = ['stores', 'store_members', 'products', 'orders', 'store_settings'];
 for (const table of requiredTables) {
@@ -20,4 +22,12 @@ assert.match(migration, /create policy "owners can update their stores"/i, 'Miss
 assert.match(catalogTests, /RLS is not enabled on public\.%/i, 'Catalog SQL test must assert RLS');
 assert.match(catalogTests, /Unexpected anon policy found/i, 'Catalog SQL test must assert no anon policies');
 
-assert.match(transactional, /create or replace function public\\.create_order_atomic/i, 'Missing atomic order creation RPC');\nassert.match(transactional, /for update/i, 'Atomic order creation must lock product rows');\nassert.match(transactional, /create or replace function public\\.cancel_order_atomic/i, 'Missing atomic order cancellation RPC');\nassert.match(transactional, /revoke all on function public\\.create_order_atomic/i, 'Order RPC must revoke PUBLIC execution');\nassert.match(cloudClient, /service_role/i, 'Cloud client must reject service-role credentials');\nassert.match(cloudClient, /\.rpc\('create_store'/i, 'Cloud client must call safe store creation RPC');\nassert.match(cloudClient, /storeId \+ ':product'/i, 'Cloud import identifiers must be scoped per store');\nconsole.log('Cloud guardrails passed: tenant tables, RLS, auth/store RPC, and transactional inventory RPC checks.');
+assert.match(transactional, /create or replace function public\.create_order_atomic/i, 'Missing atomic order creation RPC');
+assert.match(transactional, /for update/i, 'Atomic order creation must lock product rows');
+assert.match(transactional, /create or replace function public\.cancel_order_atomic/i, 'Missing atomic order cancellation RPC');
+assert.match(transactional, /revoke all on function public\.create_order_atomic/i, 'Order RPC must revoke PUBLIC execution');
+assert.match(cloudClient, /service_role/i, 'Cloud client must reject service-role credentials');
+assert.match(cloudClient, /\.rpc\('create_store'/i, 'Cloud client must call safe store creation RPC');
+assert.match(cloudClient, /storeId \+ ':product'/i, 'Cloud import identifiers must be scoped per store');
+
+console.log('Cloud guardrails passed: tenant tables, RLS, auth/store RPC, and transactional inventory RPC checks.');
