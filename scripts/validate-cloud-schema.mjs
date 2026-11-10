@@ -6,8 +6,8 @@ const catalogTests = readFileSync('supabase/tests/0001_rls_catalog_checks.sql', 
 
 const requiredTables = ['stores', 'store_members', 'products', 'orders', 'store_settings'];
 for (const table of requiredTables) {
-  assert.match(migration, new RegExp('create table if not exists public\\\\.' + table + '\\\\b', 'i'), `Missing table: ${table}`);
-  assert.match(migration, new RegExp('alter table public\\\\.' + table + ' enable row level security', 'i'), `RLS is not enabled: ${table}`);
+  assert.ok(migration.includes(`create table if not exists public.${table} (`), `Missing table: ${table}`);
+  assert.ok(migration.includes(`alter table public.${table} enable row level security;`), `RLS is not enabled: ${table}`);
 }
 assert.match(migration, /create or replace function public\.create_store\(store_name text\)[\s\S]*?security definer[\s\S]*?set search_path = ''/i, 'create_store must be SECURITY DEFINER with an empty search_path');
 assert.match(migration, /revoke all on function public\.create_store\(text\) from public/i, 'create_store must be revoked from PUBLIC');
