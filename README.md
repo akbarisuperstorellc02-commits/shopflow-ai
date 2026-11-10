@@ -42,7 +42,8 @@ Never use a \`service_role\` or \`sb_secret_\` key in browser code. Read [the Su
 ## Important limitations
 
 - Cloud import is manual and one-way. It is not continuous synchronization and does not download cloud changes to other devices.
-- When connected to Supabase with a selected cloud store, new sales and cancellations use the transactional database RPCs. Without a cloud connection, the app continues in local-only mode.
+- When connected to Supabase with a selected cloud store, new sales and cancellations use transactional database RPCs; the browser keeps a local working copy. Without a cloud connection, the app continues in local-only mode.
+- Product create/edit/delete and store-setting changes are still local-only after the initial import. There is no automatic or bidirectional sync.
 - Supabase migrations have not been applied to a live project by this repository's CI. Live cross-account and concurrency tests remain required.
 - Team invitations, public storefronts, payments, billing, email notifications and AI features are not enabled.
 - GitHub Pages is a static host; it does not provide a private server or protect secrets embedded in browser code.
