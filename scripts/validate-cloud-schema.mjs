@@ -3,6 +3,7 @@ import { strict as assert } from 'node:assert';
 
 const migration = readFileSync('supabase/migrations/0001_initial_schema.sql', 'utf8');
 const catalogTests = readFileSync('supabase/tests/0001_rls_catalog_checks.sql', 'utf8');
+const rpcTests = readFileSync('supabase/tests/0002_transactional_rpc_checks.sql', 'utf8');
 const transactional = readFileSync('supabase/migrations/0002_transactional_inventory.sql', 'utf8');
 const cloudClient = readFileSync('assets/js/cloud.js', 'utf8');
 const appClient = readFileSync('assets/js/app.js', 'utf8');
@@ -22,6 +23,9 @@ assert.match(migration, /create policy "managers can update orders"/i);
 assert.match(migration, /create policy "owners can update their stores"/i);
 assert.match(catalogTests, /RLS is not enabled on public\.%/i);
 assert.match(catalogTests, /Unexpected anon policy found/i);
+assert.match(rpcTests, /has_function_privilege\('anon'/i);
+assert.match(rpcTests, /has_function_privilege\('authenticated'/i);
+assert.match(rpcTests, /SECURITY DEFINER/i);
 
 assert.match(transactional, /create or replace function public\.create_order_atomic/i);
 assert.match(transactional, /for update/i);
