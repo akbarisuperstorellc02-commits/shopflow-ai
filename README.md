@@ -1,49 +1,50 @@
-# ShopFlow — Starter MVP
+# ShopFlow AI
 
-A responsive, browser-based seller workspace prototype.
+A responsive seller workspace for managing products, orders, inventory, customers and financial reports.
+
+## Current release status
+
+The published GitHub Pages app is a **local-first MVP**, not yet a production SaaS. It stores data in the current browser's localStorage. It does not currently provide user sign-in, cloud synchronization, shared multi-device data, online checkout, or live AI services.
 
 ## Run locally
+
 Open `index.html` in a modern browser. No build step or API key is required.
 
 ## Languages
+
 - English (left-to-right)
 - Afghan Dari (right-to-left)
 - Pashto (right-to-left)
-- Language choice is saved in the current browser and restored on return.
-- Dashboard, navigation, forms, notifications, tables, and printable invoices are localized. Product/customer text entered by the seller remains as entered.
+- Interface numbers remain Western/English digits.
+- Language selection is saved in the current browser.
 
-## Included in this first prototype
-- Overview dashboard and basic sales metrics
-- Date-range financial reports with revenue, order count, known costs, gross profit and average order value
-- Daily/monthly sales trend chart and financial CSV export; unknown historical costs remain blank
-- Product catalog create, edit and delete controls with optional stock tracking and low-stock indicators
-- Optional purchase costs so unknown cost is never silently recorded as zero
-- Manual order entry with automatic stock deduction, insufficient-stock protection, and order cancellation with stock restoration
-- Cancelled orders remain in history but are excluded from sales and profit totals
-- Product and order search
-- CSV export for products and orders
-- Customer list derived from orders
-- Branded, A4-ready printable invoices with store logo and contact details (use the browser's Save as PDF option)
-- Store name, contact email, phone, address, logo upload and currency settings
+## Included features
+
+- Responsive dashboard and sales overview
+- Product create/edit/delete with optional stock and purchase-cost tracking
+- Manual order entry, stock deduction, insufficient-stock protection and cancellation with stock restoration
+- Customer summaries and searchable product/order lists
+- Branded A4 printable invoices (browser Print / Save as PDF)
+- Store profile, contact details, logo and currency settings
+- Daily/monthly financial reports, revenue, known cost, gross profit and sales trend
+- CSV export for products, orders and financial reports
+- JSON backup and validated restore
 - Browser localStorage persistence
-- Downloadable JSON backup and validated restore workflow
 
-## Important limitations
-This is a single-browser demo, not a production SaaS. Data is stored locally in the browser and is not synced across devices or users. There is no authentication, shared database, online checkout, server-side authorization, or AI integration yet. Backups are manual JSON files; keep them in a safe location because they may contain customer and sales data. Financial reporting is limited to data entered in this browser; gross profit is not net profit and does not account for overhead, taxes, shipping, refunds or payment fees. Do not enter sensitive customer information.
+Gross profit is not net profit. Overheads, taxes, shipping, refunds and payment fees are not fully accounted for. Historical orders without a recorded purchase cost are excluded from cost/profit calculations.
 
-## Roadmap
-1. Validate workflows with 3–5 small sellers.
-2. Add a secure backend, authentication, and per-store data isolation.
-3. Add shareable public storefronts and customer order forms.
-4. Validate invoice branding and improve print layouts.
-5. Add optional AI copywriting only after customer demand is validated.
-6. Add a payment provider only after confirming it supports the operator's country and business setup.
+## Secure cloud foundation (prepared, not connected)
 
-## Suggested stack for production
-- Frontend: Next.js or a lightweight static frontend
-- Backend/database/auth: Supabase (review current free-tier limits)
-- Hosting: Cloudflare Pages or another suitable host
-- Repository: GitHub
+The `supabase/` folder contains a PostgreSQL schema with tenant-scoped stores, memberships, products, orders and settings, row-level security (RLS), and a safe `create_store(name)` function.
+
+Read [Supabase setup and security notes](supabase/README.md) before applying it. **This schema is not yet connected to the live frontend.** Do not enter real customer data expecting it to sync to the cloud.
+
+Never commit a Supabase `service_role` key, database password, or other secret. Browser clients may only use the project URL and publishable/anon key after RLS has been enabled and tested.
+
+## Development roadmap
+
+See [ROADMAP.md](ROADMAP.md) for remaining authentication, cloud-sync, transactional inventory, team access, privacy and release gates.
 
 ## License
+
 MIT
