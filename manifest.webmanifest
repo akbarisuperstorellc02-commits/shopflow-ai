@@ -1,0 +1,22 @@
+{
+  "id": "./",
+  "name": "ShopFlow AI — Seller Workspace",
+  "short_name": "ShopFlow",
+  "description": "Manage products, orders, inventory and sales from one seller workspace.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f8fb",
+  "theme_color": "#f8f8fb",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "assets/icons/shopflow.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
