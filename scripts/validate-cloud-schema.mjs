@@ -42,5 +42,6 @@ assert.match(cloudClient, /cancel_order_atomic/i);
 assert.match(appClient, /window\.ShopFlowBridge=\{/i);
 assert.match(appClient, /ShopFlowCloud\.createOrder/i);
 assert.match(appClient, /ShopFlowCloud\.cancelOrder/i);
+assert.ok(appClient.indexOf('I18N.en=Object.assign(I18N.en,{cloudTitle:') < appClient.indexOf("document.getElementById('backup-file')"), 'Cloud translations must load before the backup restore handler.');
 
 console.log('ShopFlow guardrails passed: tenant tables/RLS, auth, transactional inventory, cloud order integration and safe import.');
