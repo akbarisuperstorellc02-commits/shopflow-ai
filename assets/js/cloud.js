@@ -1,4 +1,5 @@
-let createClient = null;\nconst SUPABASE_JS_URL = 'https://esm.sh/@supabase/supabase-js@2.57.0';
+let createClient = null;
+const SUPABASE_JS_URL = 'https://esm.sh/@supabase/supabase-js@2.57.0';
 
 const CONFIG_KEY = 'shopflow-cloud-config-v1';
 const MAP_KEY = 'shopflow-cloud-id-map-v1';
