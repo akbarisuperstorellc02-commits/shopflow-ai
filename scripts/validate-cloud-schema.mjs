@@ -8,6 +8,10 @@ const transactional = readFileSync('supabase/migrations/0002_transactional_inven
 const cloudClient = readFileSync('assets/js/cloud.js', 'utf8');
 const appClient = readFileSync('assets/js/app.js', 'utf8');
 const html = readFileSync('index.html', 'utf8');
+const manifest = JSON.parse(readFileSync('manifest.webmanifest', 'utf8'));
+const serviceWorker = readFileSync('service-worker.js', 'utf8');
+const pwaClient = readFileSync('assets/js/pwa.js', 'utf8');
+const appIcon = readFileSync('assets/icons/shopflow.svg', 'utf8');
 
 const requiredTables = ['stores', 'store_members', 'products', 'orders', 'store_settings'];
 for (const table of requiredTables) {
@@ -60,4 +64,13 @@ assert.match(appClient, /ShopFlowCloud\.createOrder/i);
 assert.match(appClient, /ShopFlowCloud\.cancelOrder/i);
 assert.ok(appClient.indexOf('I18N.en=Object.assign(I18N.en,{cloudTitle:') < appClient.indexOf("document.getElementById('backup-file')"), 'Cloud translations must load before the backup restore handler.');
 
-console.log('ShopFlow guardrails passed: tenant tables/RLS, auth, transactional inventory, cloud order integration and safe import.');
+assert.equal(manifest.display, 'standalone', 'PWA must be installable in standalone mode.');
+assert.ok(manifest.icons?.some(icon => icon.src === 'assets/icons/shopflow.svg'), 'PWA manifest must reference the app icon.');
+assert.ok(html.includes('rel="manifest" href="manifest.webmanifest"'));
+assert.ok(html.includes('assets/js/pwa.js'));
+assert.ok(serviceWorker.includes('addAll(SHELL_FILES'));
+assert.ok(serviceWorker.includes("request.mode === 'navigate'"));
+assert.ok(pwaClient.includes('serviceWorker.register'));
+assert.ok(appIcon.includes('<svg'));
+
+console.log('ShopFlow guardrails passed: tenant tables/RLS, auth, transactional inventory, cloud integration, safe import and PWA offline shell.');
