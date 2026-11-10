@@ -47,8 +47,8 @@ assert.match(cloudClient, /pullCloudData/i);
 assert.match(cloudClient, /\.from\('products'\)\.select/i);
 assert.match(cloudClient, /\.from\('orders'\)\.select/i);
 assert.match(appClient, /mergeCloudData:data=>/i);
-assert.match(appClient, /confirmCloudPull:()=>window\.confirm/i);
-assert.match(cloudClient, /cloudPullStatus\(data\.skippedMultiLine/i);
+assert.ok(appClient.includes('confirmCloudPull:()=>window.confirm'), 'Cloud pull must ask before replacing matching data.');
+assert.ok(cloudClient.includes('cloudPullStatus(data.skippedMultiLine'), 'Cloud pull should show a localized completion result.');
 assert.match(html, /id="cloud-pull"/i);
 
 assert.match(appClient, /ShopFlowCloud\.upsertProduct/i);
