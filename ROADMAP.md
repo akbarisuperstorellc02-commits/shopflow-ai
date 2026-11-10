@@ -22,6 +22,7 @@
 - [x] Explicit one-way local-to-cloud import
 - [x] Transactional create/cancel order RPCs with stock row locking
 - [x] Connect cloud-mode browser order/cancel actions to transactional RPCs
+- [x] Load cloud account labels/translations on first launch (not only after restoring a backup)
 - [ ] Bidirectional sync with conflict resolution and store switching
 - [ ] Invitation workflow and role-management UI
 - [ ] Live two-account RLS and concurrency tests
