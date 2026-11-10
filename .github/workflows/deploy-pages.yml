@@ -26,7 +26,7 @@ jobs:
           node-version: 22
       - name: Validate JavaScript syntax
         run: node --check assets/js/app.js
-      - name: Validate cloud schema guardrails
+      - name: Validate cloud client syntax\n        run: node --check assets/js/cloud.js\n      - name: Validate cloud schema guardrails
         run: node scripts/validate-cloud-schema.mjs
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
