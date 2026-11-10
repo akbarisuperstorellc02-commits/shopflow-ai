@@ -15,13 +15,14 @@ cloud-backed until the frontend integration and end-to-end tests are complete.
 1. Create a Supabase project in a region suitable for the intended customers.
 2. Open **SQL Editor** in that project.
 3. Review and run `migrations/0001_initial_schema.sql`.
-4. In **Authentication → Providers**, enable Email sign-in and configure the
+4. Run `tests/0001_rls_catalog_checks.sql` and confirm it completes without an exception. This checks policy/RLS metadata only; it does not replace live cross-account tests.
+5. In **Authentication → Providers**, enable Email sign-in and configure the
    confirmation and password-reset URLs for the production domain.
-5. In **Authentication → URL Configuration**, add the deployed app URL and
+6. In **Authentication → URL Configuration**, add the deployed app URL and
    the local development URL to the allowed redirect URLs.
-6. In **Project Settings → API**, the project URL and publishable/anon key may
+7. In **Project Settings → API**, the project URL and publishable/anon key may
    be used by a browser client only after RLS is enabled and tested.
-7. Never put the `service_role` key, database password, or any secret key in
+8. Never put the `service_role` key, database password, or any secret key in
    browser JavaScript, GitHub Pages, a public repository, or a screenshot.
 
 ## Data model
