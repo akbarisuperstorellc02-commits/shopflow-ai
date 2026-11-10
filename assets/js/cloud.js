@@ -126,7 +126,54 @@ async function cancelCloudOrder(orderId) {
   if (error) throw error;
   return data;
 }
-window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder };
+async function upsertCloudProduct(product) {
+  if (!cloudReady()) return null;
+  const storeId = $('cloud-store').value;
+  const map = loadMap();
+  const id = uuidFor(map, storeId + ':product', product.id);
+  const row = {
+    id, store_id: storeId,
+    name: String(product.name || '').trim().slice(0, 160),
+    price: Number(product.price) || 0,
+    cost: product.cost === null || product.cost === undefined || product.cost === '' ? null : Number(product.cost),
+    stock: Number.isInteger(product.stock) && product.stock >= 0 ? product.stock : null,
+    description: String(product.description || '').slice(0, 500),
+    archived_at: null
+  };
+  const { error } = await client.from('products').upsert(row, { onConflict: 'id' });
+  if (error) throw error;
+  saveMap(map);
+  return id;
+}
+async function deleteCloudProduct(productId) {
+  if (!cloudReady()) return false;
+  const storeId = $('cloud-store').value;
+  const map = loadMap();
+  const id = map[storeId + ':product:' + String(productId)];
+  if (!id) return false;
+  const { error } = await client.from('products').delete().eq('id', id).eq('store_id', storeId);
+  if (error) throw error;
+  return true;
+}
+async function saveCloudSettings(settings) {
+  if (!cloudReady()) return false;
+  const storeId = $('cloud-store').value;
+  const { error } = await client.from('store_settings').upsert({
+    store_id: storeId,
+    settings: {
+      name: settings.name || 'My Store',
+      email: settings.email || '',
+      phone: settings.phone || '',
+      address: settings.address || '',
+      currency: settings.currency || 'USD',
+      language: settings.language || 'en',
+      logo: settings.logo || ''
+    }
+  }, { onConflict: 'store_id' });
+  if (error) throw error;
+  return true;
+}
+window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder, upsertProduct: upsertCloudProduct, deleteProduct: deleteCloudProduct, saveSettings: saveCloudSettings };
 
 async function importLocalData() {
   const api = requireClient();
