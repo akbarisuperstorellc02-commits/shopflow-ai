@@ -28,6 +28,8 @@ jobs:
         run: node --check assets/js/app.js
       - name: Validate cloud client syntax
         run: node --check assets/js/cloud.js
+      - name: Validate PWA scripts
+        run: node --check assets/js/pwa.js && node --check service-worker.js
       - name: Validate cloud schema guardrails
         run: node scripts/validate-cloud-schema.mjs
       - name: Configure GitHub Pages
