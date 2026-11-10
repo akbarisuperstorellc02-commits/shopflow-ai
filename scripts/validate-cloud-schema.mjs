@@ -44,6 +44,10 @@ assert.match(cloudClient, /local-import: stock values are the current inventory 
 assert.match(cloudClient, /saveMap\(map\); \/\//i);
 assert.match(cloudClient, /create_order_atomic/i);
 assert.match(cloudClient, /cancel_order_atomic/i);
+assert.match(cloudClient, /storeId \+ ':order:' \+ String\(orderId\)/i, 'Cloud cancellation must resolve locally mapped order IDs.');
+assert.match(cloudClient, /return data === true/i, 'Cloud cancellation must distinguish already-cancelled orders.');
+assert.match(appClient, /if\(!cancelled\)\{toast\(/i, 'The UI must not restore stock when a cloud order was already cancelled.');
+assert.match(appClient, /cancel\.dataset\.busy==='true'/i, 'Order cancellation must block duplicate clicks.');
 assert.match(cloudClient, /upsertCloudProduct/i);
 assert.match(cloudClient, /deleteCloudProduct/i);
 assert.match(cloudClient, /saveCloudSettings/i);
