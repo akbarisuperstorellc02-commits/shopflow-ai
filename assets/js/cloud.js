@@ -41,7 +41,9 @@ function setConnected(connected) {
   $('cloud-signout').disabled = !activeUser;
   $('cloud-state').textContent = activeUser ? 'Signed in' : connected ? 'Connected' : 'Not connected';
   $('cloud-connect').textContent = connected ? 'Reconnect' : 'Connect';
+  if ($('cloud-pull')) $('cloud-pull').disabled = !cloudReady();
 }
+$('cloud-store').addEventListener('change', () => { $('cloud-pull').disabled = !cloudReady(); });
 function requireClient() {
   if (!client) throw new Error('Connect your Supabase project first.');
   return client;
@@ -67,6 +69,7 @@ async function refreshStores() {
   }
   $('cloud-create-store').disabled = false;
   $('cloud-import').disabled = !stores.length;
+  $('cloud-pull').disabled = !cloudReady();
 }
 async function applySession(session) {
   activeUser = session?.user || null;
