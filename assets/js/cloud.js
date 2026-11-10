@@ -84,7 +84,7 @@ async function connect() {
   const url = $('cloud-url').value.trim().replace(/\/$/, '');
   const key = $('cloud-key').value.trim();
   if (!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(url)) throw new Error('Enter a valid Supabase project URL.');
-  if (!key || decodeRole(key) === 'service_role') throw new Error('Use the publishable/anon key only. service_role keys are blocked.');
+  if (!key || key.startsWith('sb_secret_') || decodeRole(key) === 'service_role' || (!key.startsWith('sb_publishable_') && decodeRole(key) !== 'anon')) throw new Error('Use only a publishable key or legacy anon key. Secret and service_role keys are blocked.');
   saveConfig(url, key);
   client = createClient(url, key, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
   const { data, error } = await client.auth.getSession();
