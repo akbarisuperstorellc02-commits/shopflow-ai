@@ -18,3 +18,5 @@
 .product-actions{display:flex;gap:12px;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid var(--line)}.product-actions .text-button{padding:3px 0}.danger-text{color:#c14e4e}
 
 .pill-cancelled{background:#f1f1f5;color:#77798d}
+
+.cloud-panel{margin-top:14px;max-width:760px}.cloud-grid{display:grid;gap:12px}.cloud-grid label{display:grid;gap:6px;font-size:12px;font-weight:700;color:var(--muted)}.cloud-grid input,.cloud-grid select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px 12px;background:#fff;color:var(--ink);font:inherit;min-width:0}.cloud-actions{display:flex;gap:9px;flex-wrap:wrap}.cloud-auth,.cloud-workspace{display:grid;gap:12px;padding-top:12px;border-top:1px solid var(--line)}.cloud-workspace p{margin:0}.cloud-panel .panel-head{align-items:flex-start}.cloud-panel .pill{white-space:nowrap}
