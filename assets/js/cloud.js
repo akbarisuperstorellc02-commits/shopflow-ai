@@ -327,6 +327,18 @@ $('cloud-import').addEventListener('click', async () => {
   try { await importLocalData(); } catch (error) { message(error.message || 'Import failed.', true); }
   finally { $('cloud-import').disabled = !stores.length; }
 });
+
+$('cloud-pull')?.addEventListener('click', async () => {
+  const button = $('cloud-pull');
+  button.disabled = true;
+  try {
+    const data = await pullCloudData();
+    if (!window.ShopFlowBridge?.mergeCloudData) throw new Error('The app is not ready to receive cloud data.');
+    window.ShopFlowBridge.mergeCloudData(data);
+    message(data.skippedMultiLine ? 'Cloud changes downloaded. ' + data.skippedMultiLine + ' multi-item orders were skipped.' : 'Cloud changes downloaded.');
+  } catch (error) { message(error.message || 'Cloud download failed.', true); }
+  finally { button.disabled = !cloudReady(); }
+});
 const saved = config();
 if (saved.url) $('cloud-url').value = saved.url;
 if (saved.key) $('cloud-key').value = saved.key;
