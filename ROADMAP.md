@@ -20,10 +20,10 @@
 - [x] Enable row-level security policies for all core tables
 - [x] Add atomic first-store creation RPC
 - [x] Document safe Supabase setup and key handling
-- [ ] Add authentication UI and session handling
-- [ ] Add cloud repository adapter and local-data import
-- [ ] Add transactional inventory/order RPCs
-- [ ] Add invitation workflow and role management
+- [x] Add Supabase email authentication UI and session handling
+- [x] Add explicit local-to-cloud import workflow (one-way; no continuous sync)
+- [x] Add transactional create/cancel order RPCs with row locking
+- [ ] Add invitation workflow and role management\n- [ ] Add bidirectional cloud repository and continuous multi-device sync
 - [ ] Add automated cross-tenant security tests
 - [ ] Configure backups, monitoring, privacy policy and terms
 
