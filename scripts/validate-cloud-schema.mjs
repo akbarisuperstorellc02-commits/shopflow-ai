@@ -42,6 +42,12 @@ assert.match(cloudClient, /cancel_order_atomic/i);
 assert.match(cloudClient, /upsertCloudProduct/i);
 assert.match(cloudClient, /deleteCloudProduct/i);
 assert.match(cloudClient, /saveCloudSettings/i);
+assert.match(cloudClient, /pullCloudData/i);
+assert.match(cloudClient, /\.from\('products'\)\.select/i);
+assert.match(cloudClient, /\.from\('orders'\)\.select/i);
+assert.match(appClient, /mergeCloudData:data=>/i);
+assert.match(appClient, /id="cloud-pull"/i);
+
 assert.match(appClient, /ShopFlowCloud\.upsertProduct/i);
 assert.match(appClient, /ShopFlowCloud\.deleteProduct/i);
 assert.match(appClient, /ShopFlowCloud\.saveSettings/i);
