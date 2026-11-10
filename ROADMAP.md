@@ -21,7 +21,7 @@
 - [x] Supabase email authentication UI
 - [x] Explicit one-way local-to-cloud import
 - [x] Transactional create/cancel order RPCs with stock row locking
-- [ ] Connect browser order/cancel actions to the transactional RPCs
+- [x] Connect cloud-mode browser order/cancel actions to transactional RPCs
 - [ ] Bidirectional sync with conflict resolution and store switching
 - [ ] Invitation workflow and role-management UI
 - [ ] Live two-account RLS and concurrency tests
