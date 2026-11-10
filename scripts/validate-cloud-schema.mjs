@@ -62,6 +62,8 @@ assert.match(appClient, /ShopFlowCloud\.saveSettings/i);
 assert.match(appClient, /window\.ShopFlowBridge=\{/i);
 assert.match(appClient, /ShopFlowCloud\.createOrder/i);
 assert.match(appClient, /ShopFlowCloud\.cancelOrder/i);
+assert.ok((appClient.match(/dataset\.saving==='true'/g) || []).length >= 2, 'Product and order forms must block duplicate submissions.');
+assert.ok((appClient.match(/dataset\.saving='false'/g) || []).length >= 4, 'Product and order forms must unlock after success or failure.');
 assert.ok(appClient.indexOf('I18N.en=Object.assign(I18N.en,{cloudTitle:') < appClient.indexOf("document.getElementById('backup-file')"), 'Cloud translations must load before the backup restore handler.');
 
 assert.equal(manifest.display, 'standalone', 'PWA must be installable in standalone mode.');
