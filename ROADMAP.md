@@ -19,7 +19,7 @@
 - [x] Tenant-scoped PostgreSQL schema and RLS policies
 - [x] Atomic first-store creation RPC
 - [x] Supabase email authentication UI
-- [x] Explicit one-way local-to-cloud import
+- [x] Explicit one-way local-to-cloud initial import
 - [x] Transactional create/cancel order RPCs with stock row locking
 - [x] Connect cloud-mode browser order/cancel actions to transactional RPCs
 - [x] Sync cloud-mode product create/edit/delete and store-setting updates to the selected store
