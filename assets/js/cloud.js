@@ -125,7 +125,8 @@ async function importLocalData() {
       archived_at: null
     };
   });
-  saveMap(map); // Keep deterministic IDs even if a later batch fails; retrying is idempotent.\n  for (let i = 0; i < products.length; i += 100) {
+  saveMap(map); // Keep deterministic IDs even if a later batch fails; retrying is idempotent.
+  for (let i = 0; i < products.length; i += 100) {
     const { error } = await api.from('products').upsert(products.slice(i, i + 100), { onConflict: 'id' });
     if (error) throw new Error('Products import stopped: ' + error.message);
   }
@@ -138,7 +139,8 @@ async function importLocalData() {
     return {
       id, store_id: storeId, order_number: String(o.id || '').slice(0, 80),
       customer_name: String(o.customer || 'Customer').slice(0, 160),
-      status: o.status === 'cancelled' ? 'cancelled' : 'completed',\n      notes: 'local-import: stock values are the current inventory snapshot',
+      status: o.status === 'cancelled' ? 'cancelled' : 'completed',
+      notes: 'local-import: stock values are the current inventory snapshot',
       currency: String(local.settings.currency || 'USD').slice(0, 3),
       subtotal: Number(o.total) || 0,
       cost_total: Number.isFinite(o.costTotal) ? o.costTotal : null,
