@@ -198,7 +198,7 @@ async function pullCloudData() {
   let nextLocalId = Date.now();
   const products = (productResult.data || []).map(row => {
     let localId = reverseProducts.get(row.id);
-    if (!localId) {
+    if (!localId || !/^\d+$/.test(String(localId))) {
       while (usedLocalIds.has(String(nextLocalId))) nextLocalId += 1;
       localId = String(nextLocalId++);
       usedLocalIds.add(localId);
@@ -224,7 +224,7 @@ async function pullCloudData() {
     map[storeId + ':order:' + String(localId)] = row.id;
     orders.push({
       id: localId, cloudOrder: true, customer: row.customer_name,
-      product: line.product_name || 'Product', productId: /^\\d+$/.test(String(localProductId)) ? Number(localProductId) : null,
+      product: line.product_name || 'Product', productId: /^\d+$/.test(String(localProductId)) ? Number(localProductId) : null,
       quantity: Number(line.quantity) || 1, total: Number(row.subtotal) || 0,
       costTotal: row.cost_total === null ? null : Number(row.cost_total),
       date: new Date(row.sold_at).toLocaleDateString('en-US'),
