@@ -108,7 +108,27 @@ function toIso(order) {
   const parsed = new Date(order.date || Date.now());
   return Number.isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString();
 }
-function cloudReady() { return !!(client && activeUser && $('cloud-store').value); }\nasync function createCloudOrder({ customer, productId, quantity }) {\n  if (!cloudReady()) return null;\n  const storeId = $('cloud-store').value;\n  const map = loadMap();\n  const cloudProductId = map[storeId + ':product:' + String(productId)];\n  if (!cloudProductId) throw new Error('Import this product to the selected cloud store before recording a cloud sale.');\n  const settings = window.ShopFlowBridge.exportData().settings;\n  const { data, error } = await client.rpc('create_order_atomic', { target_store: storeId, order_customer: customer, item_lines: [{ product_id: cloudProductId, quantity }], order_currency: settings.currency || 'USD' });\n  if (error) throw error;\n  return data;\n}\nasync function cancelCloudOrder(orderId) {\n  if (!cloudReady()) throw new Error('Cloud connection is not ready.');\n  const { data, error } = await client.rpc('cancel_order_atomic', { target_order: orderId });\n  if (error) throw error;\n  return data;\n}\nwindow.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder };\n\nasync function importLocalData() {
+function cloudReady() { return !!(client && activeUser && $('cloud-store').value); }
+async function createCloudOrder({ customer, productId, quantity }) {
+  if (!cloudReady()) return null;
+  const storeId = $('cloud-store').value;
+  const map = loadMap();
+  const cloudProductId = map[storeId + ':product:' + String(productId)];
+  if (!cloudProductId) throw new Error('Import this product to the selected cloud store before recording a cloud sale.');
+  const settings = window.ShopFlowBridge.exportData().settings;
+  const { data, error } = await client.rpc('create_order_atomic', { target_store: storeId, order_customer: customer, item_lines: [{ product_id: cloudProductId, quantity }], order_currency: settings.currency || 'USD' });
+  if (error) throw error;
+  return data;
+}
+async function cancelCloudOrder(orderId) {
+  if (!cloudReady()) throw new Error('Cloud connection is not ready.');
+  const { data, error } = await client.rpc('cancel_order_atomic', { target_order: orderId });
+  if (error) throw error;
+  return data;
+}
+window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder };
+
+async function importLocalData() {
   const api = requireClient();
   const storeId = $('cloud-store').value;
   if (!activeUser || !storeId) throw new Error('Sign in and select a cloud store first.');
