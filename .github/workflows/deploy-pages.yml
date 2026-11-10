@@ -20,8 +20,14 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Validate JavaScript syntax
         run: node --check assets/js/app.js
+      - name: Validate cloud schema guardrails
+        run: node scripts/validate-cloud-schema.mjs
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
         with:
