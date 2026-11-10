@@ -33,13 +33,13 @@ Open `index.html` in a modern browser. No build step or API key is required.
 
 Gross profit is not net profit. Overheads, taxes, shipping, refunds and payment fees are not fully accounted for. Historical orders without a recorded purchase cost are excluded from cost/profit calculations.
 
-## Secure cloud foundation (prepared, not connected)
+## Supabase account and cloud import (configuration required)
 
 The `supabase/` folder contains a PostgreSQL schema with tenant-scoped stores, memberships, products, orders and settings, row-level security (RLS), and a safe `create_store(name)` function.
 
 Read [Supabase setup and security notes](supabase/README.md) before applying it. **This schema is not yet connected to the live frontend.** Do not enter real customer data expecting it to sync to the cloud.
 
-Never commit a Supabase `service_role` key, database password, or other secret. Browser clients may only use the project URL and publishable/anon key after RLS has been enabled and tested.
+Never commit a Supabase `service_role` key, database password, or other secret. The UI rejects a JWT `service_role` key and only accepts a project URL plus a public publishable/anon key.
 
 ## Development roadmap
 
