@@ -1,6 +1,6 @@
 # Supabase backend foundation
 
-ShopFlow includes an optional browser connection to Supabase. The current cloud features are email authentication, listing/creating stores, explicit initial import of local products/orders/settings, one-way product and settings updates from the active browser, and transactional cloud order creation/cancellation. Cloud changes made elsewhere are not automatically downloaded; this is not bidirectional multi-device sync.
+ShopFlow includes an optional browser connection to Supabase. The current cloud features are email authentication, listing/creating stores, explicit initial import of local products/orders/settings, product and settings updates from the active browser, an explicit manual cloud-to-browser download action, and transactional cloud order creation/cancellation. Sync is manually initiated; it is not automatic or realtime.
 
 ## Configure a new Supabase project
 
