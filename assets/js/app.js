@@ -72,3 +72,5 @@ applyLanguage();render();
 I18N.en=Object.assign(I18N.en,{cloudPull:'Download cloud changes',cloudPullHelp:'Download products, orders and settings from the selected cloud store into this browser.',cloudPullDone:'Cloud changes downloaded.',cloudPullSkipped:'Some multi-item orders were skipped because this version displays one product per order.'});
 I18N.fa=Object.assign(I18N.fa,{cloudPull:'دریافت تغییرات ابری',cloudPullHelp:'محصولات، سفارش‌ها و تنظیمات فروشگاه ابری انتخاب‌شده را به این مرورگر دریافت کنید.',cloudPullDone:'تغییرات ابری دریافت شد.',cloudPullSkipped:'برخی سفارش‌های چندمحصولی دریافت نشدند؛ نسخهٔ فعلی در هر سفارش یک محصول را نمایش می‌دهد.'});
 I18N.ps=Object.assign(I18N.ps,{cloudPull:'د ورېځ بدلونونه ترلاسه کړئ',cloudPullHelp:'د ټاکل شوي ورېځني پلورنځي محصولات، سپارښتنې او امستنې دې براوزر ته ترلاسه کړئ.',cloudPullDone:'د ورېځ بدلونونه ترلاسه شول.',cloudPullSkipped:'ځینې څو-محصولي سپارښتنې ونه ترلاسه شوې؛ دا نسخه په هره سپارښتنه کې یو محصول ښيي.'});
+
+applyLanguage();render();
