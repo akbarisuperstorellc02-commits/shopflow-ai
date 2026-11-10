@@ -335,6 +335,7 @@ $('cloud-import').addEventListener('click', async () => {
 
 $('cloud-pull')?.addEventListener('click', async () => {
   const button = $('cloud-pull');
+  if (!window.ShopFlowBridge?.confirmCloudPull?.()) return;
   button.disabled = true;
   try {
     const data = await pullCloudData();
