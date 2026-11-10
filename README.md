@@ -17,7 +17,8 @@ The public release is a **local-first seller MVP with optional Supabase account 
 
 ## Features
 
-- Responsive seller dashboard.
+- Responsive seller dashboard, installable as a Progressive Web App (PWA) on supported browsers.
+- Offline app-shell caching for local-first workflows; cloud actions still require an internet connection.
 - Product creation, editing, deletion, price/cost and stock tracking.
 - Manual order entry, stock validation and cancellation/restoration.
 - Customer summaries and printable A4 invoice.
@@ -28,6 +29,10 @@ The public release is a **local-first seller MVP with optional Supabase account 
 - Local browser persistence.
 - Optional Supabase email authentication, cloud store creation, initial data import, product/settings uploads, manual cloud downloads and transactional cloud order creation/cancellation.
 - PostgreSQL tenant schema, row-level security and transactional inventory RPC migrations.
+
+## Install and offline use
+
+On a supported browser, open the live HTTPS app and use the browser menu’s **Install app** or **Add to Home Screen** option. The app shell is cached after the first successful load. Product and order workflows use this browser’s local data offline; Supabase sign-in and cloud sync require an internet connection. Browser storage is not an encrypted backup, so export backups regularly.
 
 ## Run
 
