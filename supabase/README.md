@@ -1,6 +1,6 @@
 # Supabase backend foundation
 
-ShopFlow includes an optional browser connection to Supabase. The current cloud features are email authentication, listing/creating stores, and an explicit one-way import of local products, orders and settings. This is not continuous multi-device sync.
+ShopFlow includes an optional browser connection to Supabase. The current cloud features are email authentication, listing/creating stores, explicit initial import of local products/orders/settings, one-way product and settings updates from the active browser, and transactional cloud order creation/cancellation. Cloud changes made elsewhere are not automatically downloaded; this is not bidirectional multi-device sync.
 
 ## Configure a new Supabase project
 
@@ -40,7 +40,8 @@ Imported order rows are tagged with \`local-import:\` notes because the imported
 - Cloud import is manual and one-way; local changes after import are not automatically uploaded.
 - Cloud changes are not downloaded to other devices.
 - In cloud mode, new order creation and cancellation call the transactional RPCs; the browser also keeps a local working copy for its current UI.
-- Product create/edit/delete and store-setting changes are not synced after the initial import. Re-importing can overwrite cloud product stock with the browser's current snapshot, so do not use it as a routine sync operation.
+- Product create/edit/delete and store-setting updates sync from the active browser to the selected cloud store. Changes made in another browser/device are not automatically downloaded.
+- Re-running the initial import can overwrite cloud product stock with this browser's current snapshot; do not use it as a routine sync operation.
 - Team invitations and role-management UI are not implemented.
 - Cross-account RLS tests, concurrency tests and browser end-to-end tests have not been run against a live Supabase project.
 - Backups, monitoring, privacy policy, terms, support and account-recovery operations need production setup.
