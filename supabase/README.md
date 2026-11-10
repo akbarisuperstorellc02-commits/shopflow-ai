@@ -31,7 +31,7 @@ The \`create_store(store_name)\` RPC creates the store, owner membership and set
 
 RLS is enabled on every application table. Members can read only stores where they are members. Only owners/admins can manage products and settings. Members can create orders; only managers can update/cancel them.
 
-Migration 0002 adds \`create_order_atomic\` and \`cancel_order_atomic\`. These functions lock rows while adjusting stock to prevent overselling under concurrent transactions. The current browser order form is still local-only and has not yet been connected to these RPCs.
+Migration 0002 adds \`create_order_atomic\` and \`cancel_order_atomic\`. These functions lock rows while adjusting stock to prevent overselling under concurrent transactions. When the app is connected to a Supabase account and a cloud store is selected, new order creation and cancellation call these RPCs. Without a configured cloud connection, the app remains local-only.
 
 Imported order rows are tagged with \`local-import:\` notes because the imported product stock is already the current inventory snapshot. Cancelling imported historical orders therefore must not add their quantities back to that snapshot.
 
