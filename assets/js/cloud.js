@@ -125,9 +125,12 @@ async function createCloudOrder({ customer, productId, quantity }) {
 }
 async function cancelCloudOrder(orderId) {
   if (!cloudReady()) throw new Error('Cloud connection is not ready.');
-  const { data, error } = await client.rpc('cancel_order_atomic', { target_order: orderId });
+  const storeId = $('cloud-store').value;
+  const map = loadMap();
+  const cloudOrderId = map[storeId + ':order:' + String(orderId)] || orderId;
+  const { data, error } = await client.rpc('cancel_order_atomic', { target_order: cloudOrderId });
   if (error) throw error;
-  return data;
+  return data === true;
 }
 async function upsertCloudProduct(product) {
   if (!cloudReady()) return null;
