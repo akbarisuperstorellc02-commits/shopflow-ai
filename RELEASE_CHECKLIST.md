@@ -5,6 +5,7 @@ This checklist distinguishes the shipped browser MVP from the additional work re
 ## Current public MVP
 
 - [x] Static application published on GitHub Pages.
+- [x] Installable PWA manifest, app icon and offline app-shell cache.
 - [x] Responsive seller workspace and local browser persistence.
 - [x] Product and stock management.
 - [x] Manual single-product order entry and cancellation.
