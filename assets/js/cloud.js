@@ -173,7 +173,53 @@ async function saveCloudSettings(settings) {
   if (error) throw error;
   return true;
 }
-window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder, upsertProduct: upsertCloudProduct, deleteProduct: deleteCloudProduct, saveSettings: saveCloudSettings };
+
+async function pullCloudData() {
+  if (!cloudReady()) throw new Error('Connect and select a cloud store first.');
+  const storeId = $('cloud-store').value;
+  const map = loadMap();
+  const reverseProducts = new Map();
+  const reverseOrders = new Map();
+  for (const [key, value] of Object.entries(map)) {
+    if (key.startsWith(storeId + ':product:')) reverseProducts.set(value, key.slice((storeId + ':product:').length));
+    if (key.startsWith(storeId + ':order:')) reverseOrders.set(value, key.slice((storeId + ':order:').length));
+  }
+  const [productResult, orderResult, settingsResult] = await Promise.all([
+    client.from('products').select('id,name,price,cost,stock,description,archived_at,updated_at').eq('store_id', storeId).is('archived_at', null).order('updated_at'),
+    client.from('orders').select('id,order_number,customer_name,status,currency,subtotal,cost_total,items,notes,sold_at,updated_at').eq('store_id', storeId).order('sold_at'),
+    client.from('store_settings').select('settings').eq('store_id', storeId).maybeSingle()
+  ]);
+  for (const result of [productResult, orderResult, settingsResult]) if (result.error) throw result.error;
+  const products = (productResult.data || []).map(row => ({
+    id: reverseProducts.get(row.id) || row.id,
+    cloudId: row.id,
+    name: row.name, price: Number(row.price) || 0,
+    cost: row.cost === null ? null : Number(row.cost),
+    stock: row.stock === null ? null : Number(row.stock),
+    description: row.description || ''
+  }));
+  const orders = [];
+  let skippedMultiLine = 0;
+  for (const row of orderResult.data || []) {
+    const lines = Array.isArray(row.items) ? row.items : [];
+    if (lines.length !== 1) { skippedMultiLine++; continue; }
+    const line = lines[0];
+    const localProductId = reverseProducts.get(line.product_id) || line.product_id;
+    const localId = reverseOrders.get(row.id) || row.id;
+    orders.push({
+      id: localId, cloudOrder: true, customer: row.customer_name,
+      product: line.product_name || 'Product', productId: localProductId,
+      quantity: Number(line.quantity) || 1, total: Number(row.subtotal) || 0,
+      costTotal: row.cost_total === null ? null : Number(row.cost_total),
+      date: new Date(row.sold_at).toLocaleDateString('en-US'),
+      dateISO: String(row.sold_at || '').slice(0, 10),
+      status: row.status === 'cancelled' ? 'cancelled' : row.status
+    });
+  }
+  saveMap(map);
+  return { products, orders, settings: settingsResult.data?.settings || null, skippedMultiLine };
+}
+window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder, upsertProduct: upsertCloudProduct, deleteProduct: deleteCloudProduct, saveSettings: saveCloudSettings, pullData: pullCloudData };
 
 async function importLocalData() {
   const api = requireClient();
