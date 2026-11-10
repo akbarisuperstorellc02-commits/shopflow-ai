@@ -34,7 +34,7 @@ assert.match(cloudClient, /storeId \+ ':product'/i);
 assert.match(cloudClient, /local-import: stock values are the current inventory snapshot/i);
 assert.match(cloudClient, /saveMap\(map\); \/\//i);
 assert.match(appClient, /window\.ShopFlowBridge=\{/i);
-assert.match(appClient, /ShopFlowCloud\?\.createOrder/i, 'Cloud sales must use the transactional create RPC');
+assert.match(appClient, /ShopFlowCloud\.createOrder/i, 'Cloud sales must use the transactional create RPC');
 assert.match(appClient, /ShopFlowCloud\.cancelOrder/i, 'Cloud cancellations must use the transactional cancel RPC');
 assert.match(cloudClient, /create_order_atomic/i);
 assert.match(cloudClient, /cancel_order_atomic/i);
