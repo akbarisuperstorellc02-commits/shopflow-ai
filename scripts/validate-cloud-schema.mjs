@@ -50,7 +50,7 @@ assert.match(appClient, /mergeCloudData:data=>/i);
 assert.ok(appClient.includes('confirmCloudPull:()=>window.confirm'), 'Cloud pull must ask before replacing matching data.');
 assert.ok(cloudClient.includes('cloudPullStatus(data.skippedMultiLine'), 'Cloud pull should show a localized completion result.');
 assert.match(html, /id="cloud-pull"[^>]*disabled/i);
-assert.ok(app.includes('await window.ShopFlowCloud.saveSettings(state.settings)'), 'Cloud logo changes must be uploaded when connected.');
+assert.ok(appClient.includes('await window.ShopFlowCloud.saveSettings(state.settings)'), 'Cloud logo changes must be uploaded when connected.');
 
 assert.match(appClient, /ShopFlowCloud\.upsertProduct/i);
 assert.match(appClient, /ShopFlowCloud\.deleteProduct/i);
