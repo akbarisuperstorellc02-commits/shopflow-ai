@@ -3,7 +3,7 @@
 ## Milestone 0 — local seller MVP <complete>
 - [x] Responsive dashboard
 - [x] Product create/edit/delete and stock tracking
-- [x] Manual order entry and cancellation with local inventory restoration
+- [x] Manual multi-item order entry and cancellation with per-line local inventory restoration
 - [x] Customer summary and printable invoice
 - [x] Store settings and browser persistence
 - [x] JSON backup/restore with validation
@@ -22,16 +22,16 @@
 - [x] Atomic first-store creation RPC
 - [x] Supabase email authentication UI
 - [x] Explicit one-way local-to-cloud initial import
-- [x] Transactional create/cancel order RPCs with stock row locking
+- [x] Transactional multi-item create/cancel order RPCs with stock row locking
 - [x] Cloud-mode browser order/cancel actions use transactional RPCs
 - [x] Product create/edit/delete and store-setting uploads
-- [x] Explicit manual cloud-to-browser pull for products, single-item orders and settings
+- [x] Explicit manual cloud-to-browser pull for products, multi-item orders and settings
 - [x] Archive product deletions as cloud tombstones and remove them on the next manual pull
 - [ ] Automatic/realtime sync and conflict resolution
 - [ ] Apply migrations to an operator-owned live Supabase project
 - [ ] Verify RLS isolation with two unrelated accounts
 - [ ] Run live concurrency, stock and duplicate-submission tests
-- [ ] Live two-account verification of deletion propagation and sync behavior
+- [ ] Live two-account verification of multi-item orders, deletion propagation and sync behavior
 - [ ] Invitation workflow and role-management UI
 - [ ] Production backups, monitoring, account recovery and reviewed privacy/terms documents
 
