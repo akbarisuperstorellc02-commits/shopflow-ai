@@ -79,6 +79,8 @@ assert.ok(html.includes('rel="manifest" href="manifest.webmanifest"'));
 assert.ok(html.includes('assets/js/pwa.js'));
 assert.ok(serviceWorker.includes('addAll(SHELL_FILES'));
 assert.ok(serviceWorker.includes("request.mode === 'navigate'"));
+assert.ok(serviceWorker.includes("const CACHE_NAME = 'shopflow-shell-v2'"), 'PWA cache version must change when cache behavior changes.');
+assert.ok(serviceWorker.indexOf('const response = await fetch(request)') < serviceWorker.indexOf('caches.match(request)'), 'PWA assets must use network-first with an offline cache fallback.');
 assert.ok(pwaClient.includes('serviceWorker.register'));
 assert.ok(appIcon.includes('<svg'));
 
