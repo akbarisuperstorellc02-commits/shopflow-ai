@@ -47,6 +47,15 @@ assert.ok(cloudClient.includes('cloudImportConfirm?.()'), 'Cloud import must req
 assert.ok(!appClient.includes('repeatable upload'), 'The UI must not describe the initial snapshot import as routine/repeatable sync.');
 assert.match(cloudClient, /saveMap\(map\); \/\//i);
 assert.match(cloudClient, /create_order_atomic/i);
+assert.match(cloudClient, /async function createCloudOrder\(\{ customer, items \}\)/, 'Cloud order creation must accept multiple items.');
+assert.match(cloudClient, /item_lines: itemLines/, 'All order lines must be sent to the transactional RPC.');
+assert.match(cloudClient, /const items = lines\.map\(line =>/, 'Cloud pull must map every item in a multi-item order.');
+assert.match(cloudClient, /const sourceLines = Array\.isArray\(o\.items\)/, 'Initial cloud import must preserve multi-item local orders.');
+assert.match(appClient, /id="order-items"/, 'Order form must provide a multi-item line editor.');
+assert.match(appClient, /function orderLines\(order\)/, 'Legacy and multi-item orders must share a line normalizer.');
+assert.match(appClient, /add-order-item/, 'Order form must allow adding more than one item.');
+assert.match(appClient, /orderLines\(o\)\.map\(line =>/, 'Invoices must print every order line.');
+assert.match(appClient, /data\.items|Array\.isArray\(o\.items\)/, 'Backup restore must preserve item arrays.');
 assert.match(cloudClient, /cancel_order_atomic/i);
 assert.match(cloudClient, /storeId \+ ':order:' \+ String\(orderId\)/i, 'Cloud cancellation must resolve locally mapped order IDs.');
 assert.match(cloudClient, /return data === true/i, 'Cloud cancellation must distinguish already-cancelled orders.');
