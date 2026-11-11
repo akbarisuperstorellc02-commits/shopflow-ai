@@ -75,6 +75,7 @@ assert.ok(appClient.indexOf('I18N.en=Object.assign(I18N.en,{cloudTitle:') < appC
 
 assert.equal(manifest.display, 'standalone', 'PWA must be installable in standalone mode.');
 assert.ok(manifest.icons?.some(icon => icon.src === 'assets/icons/shopflow.svg'), 'PWA manifest must reference the app icon.');
+assert.ok(manifest.icons?.some(icon => String(icon.purpose).includes('maskable')), 'PWA manifest should provide a maskable icon purpose.');
 assert.ok(html.includes('rel="manifest" href="manifest.webmanifest"'));
 assert.ok(html.includes('assets/js/pwa.js'));
 assert.ok(serviceWorker.includes('addAll(SHELL_FILES'));
