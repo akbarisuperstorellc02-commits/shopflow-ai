@@ -73,7 +73,7 @@ create or replace function public.stamp_created_by()
 returns trigger
 language plpgsql
 set search_path = ''
-as $
+as $$
 begin
   if tg_op = 'INSERT' then
     new.created_by := auth.uid();
@@ -271,3 +271,4 @@ with check (public.can_manage_store(store_id));
 
 -- No public/anon policies are created. Public storefront access must be
 -- implemented separately with narrowly scoped, read-only views/RPCs.
+
