@@ -20,7 +20,7 @@ The public release is a **local-first seller MVP with optional Supabase account 
 - Responsive seller dashboard, installable as a Progressive Web App (PWA) on supported browsers.
 - Network-first app-shell updates with cached offline fallback for local-first workflows; cloud actions still require an internet connection.
 - Product creation, editing, deletion, price/cost and stock tracking.
-- Manual order entry, stock validation and cancellation/restoration.
+- Manual single-product order entry, stock validation and cancellation/restoration.
 - Customer summaries and printable A4 invoice.
 - Store identity, contact details, logo and currency settings.
 - Search, CSV exports and financial reports.
@@ -53,7 +53,7 @@ Never use a `service_role` or `sb_secret_` key in browser code. Public keys are 
 ## Important limitations
 
 - Cloud sync is manual, not realtime. Connected product/settings changes and sales upload to the selected cloud store. Use Download cloud changes to manually pull products, supported single-item orders and settings into this browser.
-- Cloud downloads replace matching product records and store settings after confirmation, preserve local-only records, and propagate archived product deletions. Multi-item orders are skipped because the current interface supports one product per order.
+- Cloud downloads replace matching product records and store settings after confirmation, preserve local-only records, and propagate archived product deletions. The order form currently supports one product per order; multi-item cloud orders are skipped.
 - Initial cloud import is a snapshot upload and may overwrite cloud product stock with the local snapshot. Do not repeat it as a routine sync method.
 - Supabase migrations are included in the repository but have not been applied to a live project by repository CI. Live cross-account and concurrency tests remain required.
 - Team invitations, public storefronts, online payments, billing, email notifications and AI features are not enabled.
