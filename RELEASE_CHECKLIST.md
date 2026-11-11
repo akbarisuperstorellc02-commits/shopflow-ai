@@ -29,7 +29,8 @@ This checklist distinguishes the shipped browser MVP from the additional work re
 ## Before commercial SaaS launch
 
 - [ ] Complete mobile and desktop end-to-end testing on supported browsers.
-- [ ] Implement and test realtime or reliable conflict-aware sync and deletion propagation.
+- [x] Implement source-level product deletion tombstones and apply them on the next manual cloud pull.
+- [ ] Verify deletion propagation with two real accounts and implement automatic/realtime sync with conflict resolution.
 - [ ] Decide and implement team invitations and role-management UX.
 - [ ] Add a real support channel and publish reviewed privacy and terms documents.
 - [ ] Complete accessibility, performance and security reviews.
