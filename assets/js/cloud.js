@@ -206,7 +206,7 @@ async function pullCloudData() {
   const products = (productResult.data || []).filter(row => {
     if (!row.archived_at) return true;
     const localId = reverseProducts.get(row.id);
-    if (localId && /^\\d+$/.test(String(localId))) deletedProductIds.push(Number(localId));
+    if (localId && /^\d+$/.test(String(localId))) deletedProductIds.push(Number(localId));
     return false;
   }).map(row => {
     let localId = reverseProducts.get(row.id);
