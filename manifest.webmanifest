@@ -10,13 +10,16 @@
   "orientation": "any",
   "background_color": "#f8f8fb",
   "theme_color": "#f8f8fb",
-  "categories": ["business", "productivity"],
+  "categories": [
+    "business",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "assets/icons/shopflow.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }
