@@ -59,7 +59,7 @@ assert.match(html, /id="order-items"/, 'Order form must provide a multi-item lin
 assert.match(appClient, /function orderLines\(order\)/, 'Legacy and multi-item orders must share a line normalizer.');
 assert.match(appClient, /order-item-row'\)\.length>=50/, 'The order editor must enforce the database 50-line limit.');
 assert.match(html, /id="add-order-item"/, 'Order form must allow adding more than one item.');
-assert.match(appClient, /orderLines\(o\)\.map\(line =>/, 'Invoices must print every order line.');
+assert.match(appClient, /orderLines\(o\)\.map\(line\s*=>/, 'Invoices must print every order line.');
 assert.match(appClient, /for\(const line of orderLines\(o\)\)/, 'Cancelling an order must restore stock for every item line.');
 assert.match(appClient, /data\.items|Array\.isArray\(o\.items\)/, 'Backup restore must preserve item arrays.');
 assert.match(cloudClient, /cancel_order_atomic/i);
