@@ -41,6 +41,8 @@ assert.match(cloudClient, /sb_secret_/i);
 assert.match(cloudClient, /\.rpc\('create_store'/i);
 assert.match(cloudClient, /storeId \+ ':product'/i);
 assert.match(cloudClient, /local-import: stock values are the current inventory snapshot/i);
+assert.ok(appClient.includes('cloudImportConfirm'), 'Initial cloud import must display a clear snapshot-overwrite warning.');
+assert.ok(!appClient.includes('repeatable upload'), 'The UI must not describe the initial snapshot import as routine/repeatable sync.');
 assert.match(cloudClient, /saveMap\(map\); \/\//i);
 assert.match(cloudClient, /create_order_atomic/i);
 assert.match(cloudClient, /cancel_order_atomic/i);
