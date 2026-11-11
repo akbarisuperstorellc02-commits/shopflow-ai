@@ -1,4 +1,4 @@
-const CACHE_NAME = 'shopflow-shell-v1';
+const CACHE_NAME = 'shopflow-shell-v2';
 const SHELL_FILES = [
   './',
   './index.html',
@@ -49,18 +49,18 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // Network-first keeps installed browsers on the latest release while
+  // retaining a cached fallback for offline use.
   event.respondWith((async () => {
-    const cached = await caches.match(request);
-    if (cached) return cached;
     try {
       const response = await fetch(request);
       if (response.ok && response.type === 'basic') {
         const cache = await caches.open(CACHE_NAME);
-        cache.put(request, response.clone());
+        await cache.put(request, response.clone());
       }
       return response;
     } catch {
-      return Response.error();
+      return (await caches.match(request)) || Response.error();
     }
   })());
 });
