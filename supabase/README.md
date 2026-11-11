@@ -40,7 +40,7 @@ Imported order rows are tagged with \`local-import:\` notes because the imported
 - Initial cloud import is a manual snapshot upload. Later connected product/settings changes and sales/cancellations use their respective cloud operations.
 - Use Download cloud changes to manually pull cloud products, supported single-item orders and settings into each browser; no automatic/realtime download is implemented.
 - In cloud mode, new order creation and cancellation call the transactional RPCs; the browser also keeps a local working copy for its current UI.
-- Product create/edit/delete and store-setting updates upload from the active browser to the selected cloud store. Changes made elsewhere require an explicit download in each browser.
+- Product create/edit/delete and store-setting updates upload from the active browser to the selected cloud store. Product deletions are archived as tombstones and removed from other browsers on their next explicit download.
 - Re-running the initial import can overwrite cloud product stock with this browser's current snapshot; do not use it as a routine sync operation.
 - Team invitations and role-management UI are not implemented.
 - Cross-account RLS tests, concurrency tests and browser end-to-end tests have not been run against a live Supabase project.
