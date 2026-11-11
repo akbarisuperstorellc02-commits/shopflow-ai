@@ -112,14 +112,18 @@ function toIso(order) {
   return Number.isNaN(parsed.getTime()) ? new Date().toISOString() : parsed.toISOString();
 }
 function cloudReady() { return !!(client && activeUser && $('cloud-store').value); }
-async function createCloudOrder({ customer, productId, quantity }) {
+async function createCloudOrder({ customer, items }) {
   if (!cloudReady()) return null;
+  if (!Array.isArray(items) || !items.length || items.length > 50) throw new Error('An order must contain between 1 and 50 items.');
   const storeId = $('cloud-store').value;
   const map = loadMap();
-  const cloudProductId = map[storeId + ':product:' + String(productId)];
-  if (!cloudProductId) throw new Error('Import this product to the selected cloud store before recording a cloud sale.');
+  const itemLines = items.map(line => {
+    const cloudProductId = map[storeId + ':product:' + String(line.productId)];
+    if (!cloudProductId) throw new Error('Import every product in this order to the selected cloud store first.');
+    return { product_id: cloudProductId, quantity: Number(line.quantity) };
+  });
   const settings = window.ShopFlowBridge.exportData().settings;
-  const { data, error } = await client.rpc('create_order_atomic', { target_store: storeId, order_customer: customer, item_lines: [{ product_id: cloudProductId, quantity }], order_currency: settings.currency || 'USD' });
+  const { data, error } = await client.rpc('create_order_atomic', { target_store: storeId, order_customer: customer, item_lines: itemLines, order_currency: settings.currency || 'USD' });
   if (error) throw error;
   return data;
 }
@@ -226,26 +230,19 @@ async function pullCloudData() {
     };
   });
   const orders = [];
-  let skippedMultiLine = 0;
   for (const row of orderResult.data || []) {
     const lines = Array.isArray(row.items) ? row.items : [];
-    if (lines.length !== 1) { skippedMultiLine++; continue; }
-    const line = lines[0];
-    const localProductId = reverseProducts.get(line.product_id) || line.product_id;
+    if (!lines.length) continue;
     const localId = reverseOrders.get(row.id) || row.id;
     map[storeId + ':order:' + String(localId)] = row.id;
-    orders.push({
-      id: localId, cloudOrder: true, customer: row.customer_name,
-      product: line.product_name || 'Product', productId: /^\d+$/.test(String(localProductId)) ? Number(localProductId) : null,
-      quantity: Number(line.quantity) || 1, total: Number(row.subtotal) || 0,
-      costTotal: row.cost_total === null ? null : Number(row.cost_total),
-      date: new Date(row.sold_at).toLocaleDateString('en-US'),
-      dateISO: String(row.sold_at || '').slice(0, 10),
-      status: row.status === 'cancelled' ? 'cancelled' : row.status
+    const items = lines.map(line => {
+      const localProductId = reverseProducts.get(line.product_id) || null;
+      return { productId: localProductId && /^\d+$/.test(String(localProductId)) ? Number(localProductId) : null, product: line.product_name || 'Product', quantity: Number(line.quantity) || 1, unitPrice: Number(line.unit_price) || 0, lineTotal: Number(line.line_total) || (Number(line.unit_price) || 0) * (Number(line.quantity) || 1), costUnit: line.cost_unit === null || line.cost_unit === undefined ? null : Number(line.cost_unit) };
     });
+    orders.push({ id: localId, cloudOrder: true, customer: row.customer_name, items, product: items.map(line => line.product).join(', '), productId: items.length === 1 ? items[0].productId : null, quantity: items.reduce((sum,line)=>sum+line.quantity,0), total: Number(row.subtotal) || 0, costTotal: row.cost_total === null ? null : Number(row.cost_total), date: new Date(row.sold_at).toLocaleDateString('en-US'), dateISO: String(row.sold_at || '').slice(0, 10), status: row.status === 'cancelled' ? 'cancelled' : row.status });
   }
   saveMap(map);
-  return { products, orders, deletedProductIds, settings: settingsResult.data?.settings || null, skippedMultiLine };
+  return { products, orders, deletedProductIds, settings: settingsResult.data?.settings || null, skippedMultiLine: 0 };
 }
 window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder, upsertProduct: upsertCloudProduct, deleteProduct: deleteCloudProduct, saveSettings: saveCloudSettings, pullData: pullCloudData };
 
@@ -275,10 +272,18 @@ async function importLocalData() {
   }
   const orders = local.orders.filter(o => !o.cloudOrder).map(o => {
     const id = uuidFor(map, storeId + ':order', o.id);
-    const quantity = Math.max(1, Number(o.quantity) || 1);
-    const productId = productIds.get(String(o.productId));
-    const unitPrice = quantity ? (Number(o.total) || 0) / quantity : 0;
-    const costUnit = Number.isFinite(o.costTotal) ? o.costTotal / quantity : null;
+    const sourceLines = Array.isArray(o.items) && o.items.length ? o.items : [{
+      productId: o.productId, product: o.product, quantity: o.quantity,
+      unitPrice: (Number(o.total) || 0) / Math.max(1, Number(o.quantity) || 1),
+      lineTotal: Number(o.total) || 0,
+      costUnit: Number.isFinite(o.costTotal) ? o.costTotal / Math.max(1, Number(o.quantity) || 1) : null
+    }];
+    const itemSnapshot = sourceLines.map(line => {
+      const productId = productIds.get(String(line.productId));
+      const quantity = Math.max(1, Number(line.quantity) || 1);
+      const unitPrice = Number(line.unitPrice) || 0;
+      return { product_id: productId || null, product_name: String(line.product || 'Product').slice(0, 160), quantity, unit_price: unitPrice, line_total: Number.isFinite(Number(line.lineTotal)) ? Number(line.lineTotal) : unitPrice * quantity, cost_unit: line.costUnit === null || line.costUnit === undefined ? null : Number(line.costUnit) };
+    });
     return {
       id, store_id: storeId, order_number: String(o.id || '').slice(0, 80),
       customer_name: String(o.customer || 'Customer').slice(0, 160),
@@ -287,12 +292,7 @@ async function importLocalData() {
       currency: String(local.settings.currency || 'USD').slice(0, 3),
       subtotal: Number(o.total) || 0,
       cost_total: Number.isFinite(o.costTotal) ? o.costTotal : null,
-      items: [{
-        product_id: productId || null,
-        product_name: String(o.product || 'Product').slice(0, 160),
-        quantity, unit_price: unitPrice, line_total: Number(o.total) || 0,
-        cost_unit: costUnit
-      }],
+      items: itemSnapshot,
       sold_at: toIso(o)
     };
   });
