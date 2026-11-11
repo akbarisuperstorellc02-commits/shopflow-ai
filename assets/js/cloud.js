@@ -334,6 +334,8 @@ $('cloud-signup').addEventListener('click', async () => {
   try {
     const { data, error } = await requireClient().auth.signUp({
       email: $('cloud-email').value.trim(), password: $('cloud-password').value
+    }, {
+      emailRedirectTo: window.location.origin + '/shopflow-ai/'
     });
     if (error) throw error;
     if (data.session) await applySession(data.session);
