@@ -26,10 +26,12 @@
 - [x] Cloud-mode browser order/cancel actions use transactional RPCs
 - [x] Product create/edit/delete and store-setting uploads
 - [x] Explicit manual cloud-to-browser pull for products, single-item orders and settings
+- [x] Archive product deletions as cloud tombstones and remove them on the next manual pull
+- [ ] Automatic/realtime sync and conflict resolution
 - [ ] Apply migrations to an operator-owned live Supabase project
 - [ ] Verify RLS isolation with two unrelated accounts
 - [ ] Run live concurrency, stock and duplicate-submission tests
-- [ ] Automatic/realtime sync, deletion propagation and conflict resolution
+- [ ] Live two-account verification of deletion propagation and sync behavior
 - [ ] Invitation workflow and role-management UI
 - [ ] Production backups, monitoring, account recovery and reviewed privacy/terms documents
 
