@@ -8,7 +8,7 @@ This checklist distinguishes the shipped browser MVP from the additional work re
 - [x] Installable PWA manifest, app icon and offline app-shell cache.
 - [x] Responsive seller workspace and local browser persistence.
 - [x] Product and stock management.
-- [x] Manual multi-item order entry, per-line stock validation and cancellation.
+- [x] Manual multi-item order entry (up to 50 lines), per-line stock validation and cancellation.
 - [x] Customer summaries, printable invoice, CSV exports and financial reports.
 - [x] English, Afghan Dari and Pashto UI.
 - [x] JSON backup and restore with validation.
