@@ -127,11 +127,11 @@ async function createCloudOrder({ customer, items }) {
   if (error) throw error;
   return data;
 }
-async function cancelCloudOrder(orderId) {
+async function cancelCloudOrder(orderId, cloudId) {
   if (!cloudReady()) throw new Error('Cloud connection is not ready.');
   const storeId = $('cloud-store').value;
   const map = loadMap();
-  const cloudOrderId = map[storeId + ':order:' + String(orderId)] || orderId;
+  const cloudOrderId = cloudId || map[storeId + ':order:' + String(orderId)] || orderId;
   const { data, error } = await client.rpc('cancel_order_atomic', { target_order: cloudOrderId });
   if (error) throw error;
   return data === true;
@@ -239,7 +239,7 @@ async function pullCloudData() {
       const localProductId = reverseProducts.get(line.product_id) || null;
       return { productId: localProductId && /^\d+$/.test(String(localProductId)) ? Number(localProductId) : null, product: line.product_name || 'Product', quantity: Number(line.quantity) || 1, unitPrice: Number(line.unit_price) || 0, lineTotal: Number(line.line_total) || (Number(line.unit_price) || 0) * (Number(line.quantity) || 1), costUnit: line.cost_unit === null || line.cost_unit === undefined ? null : Number(line.cost_unit) };
     });
-    orders.push({ id: localId, cloudOrder: true, customer: row.customer_name, items, product: items.map(line => line.product).join(', '), productId: items.length === 1 ? items[0].productId : null, quantity: items.reduce((sum,line)=>sum+line.quantity,0), total: Number(row.subtotal) || 0, costTotal: row.cost_total === null ? null : Number(row.cost_total), date: new Date(row.sold_at).toLocaleDateString('en-US'), dateISO: String(row.sold_at || '').slice(0, 10), status: row.status === 'cancelled' ? 'cancelled' : row.status });
+    orders.push({ id: localId, cloudOrder: true, cloudId: row.id, customer: row.customer_name, items, product: items.map(line => line.product).join(', '), productId: items.length === 1 ? items[0].productId : null, quantity: items.reduce((sum,line)=>sum+line.quantity,0), total: Number(row.subtotal) || 0, costTotal: row.cost_total === null ? null : Number(row.cost_total), date: new Date(row.sold_at).toLocaleDateString('en-US'), dateISO: String(row.sold_at || '').slice(0, 10), status: row.status === 'cancelled' ? 'cancelled' : row.status });
   }
   saveMap(map);
   return { products, orders, deletedProductIds, settings: settingsResult.data?.settings || null, skippedMultiLine: 0 };
