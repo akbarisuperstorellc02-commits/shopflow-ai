@@ -82,7 +82,7 @@ begin
   end if;
   return new;
 end;
-$;
+$$;
 
 drop trigger if exists products_stamp_created_by on public.products;
 create trigger products_stamp_created_by
