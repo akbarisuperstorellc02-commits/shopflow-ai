@@ -8,7 +8,7 @@ ShopFlow includes an optional browser connection to Supabase. The current cloud 
 2. Open the SQL Editor.
 3. Apply \`migrations/0001_initial_schema.sql\`.
 4. Apply \`migrations/0002_transactional_inventory.sql\`.
-5. Run \`tests/0001_rls_catalog_checks.sql\`. This checks schema and policy metadata; it does not replace tests with two real accounts.
+5. Run `tests/0001_rls_catalog_checks.sql` and `tests/0002_transactional_rpc_checks.sql`. These check schema/policy metadata and RPC privileges; they do not replace tests with two real accounts.
 6. In Authentication → Providers, enable email sign-in and choose the email-confirmation policy.
 7. In Authentication → URL Configuration, add the deployed GitHub Pages URL to allowed redirect URLs.
 8. In Project Settings → API, copy the project URL and the publishable key (or legacy anon key).
