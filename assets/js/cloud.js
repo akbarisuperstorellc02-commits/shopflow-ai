@@ -315,7 +315,7 @@ async function importLocalData() {
   if (settingsError) throw new Error('Settings import stopped: ' + settingsError.message);
   saveMap(map);
   window.ShopFlowBridge.markCloudImportedOrders(local.orders.filter(o => !o.cloudOrder).map(o => ({ localId: String(o.id), cloudId: map[storeId + ':order:' + String(o.id)] })));
-  message('Import completed: ' + products.length + ' products and ' + orders.length + ' orders. Local data remains unchanged.');
+  message('Import completed: ' + products.length + ' products and ' + orders.length + ' orders. Local products and sales remain unchanged; cloud links were saved.');
 }
 $('cloud-connect').addEventListener('click', async () => {
   try { await connect(); } catch (error) { message(error.message || 'Connection failed.', true); }
