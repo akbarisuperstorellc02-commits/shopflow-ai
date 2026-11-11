@@ -20,7 +20,7 @@ The public release is a **local-first seller MVP with optional Supabase account 
 - Responsive seller dashboard, installable as a Progressive Web App (PWA) on supported browsers.
 - Network-first app-shell updates with cached offline fallback for local-first workflows; cloud actions still require an internet connection.
 - Product creation, editing, deletion, price/cost and stock tracking.
-- Manual multi-item order entry with per-line quantity and stock validation, transactional cloud checkout, and per-line stock restoration on cancellation.
+- Manual multi-item order entry (up to 50 lines) with per-line quantity and stock validation, transactional cloud checkout, and per-line stock restoration on cancellation.
 - Customer summaries and printable A4 invoice.
 - Store identity, contact details, logo and currency settings.
 - Search, CSV exports and financial reports.
