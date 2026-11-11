@@ -136,21 +136,19 @@ begin
     raise exception 'Only completed orders can be cancelled';
   end if;
 
-  -- Initial local-to-cloud imports include the current stock snapshot, which
-  -- already reflects historical orders. Do not add those quantities again.
-  if coalesce(target.notes, '') not like 'local-import:%' then
-    for item in
-      select x.product_id, sum(x.quantity)::integer as quantity
-      from jsonb_to_recordset(target.items) as x(product_id uuid, quantity integer)
-      where x.product_id is not null
-      group by x.product_id
-      order by x.product_id
-    loop
-      update public.products
-      set stock = stock + item.quantity
-      where id = item.product_id and store_id = target.store_id and stock is not null;
-    end loop;
-  end if;
+  -- Every completed order, including a historical order imported from a
+  -- local stock snapshot, must restore its sold quantities when cancelled.
+  for item in
+    select x.product_id, sum(x.quantity)::integer as quantity
+    from jsonb_to_recordset(target.items) as x(product_id uuid, quantity integer)
+    where x.product_id is not null
+    group by x.product_id
+    order by x.product_id
+  loop
+    update public.products
+    set stock = stock + item.quantity
+    where id = item.product_id and store_id = target.store_id and stock is not null;
+  end loop;
 
   update public.orders set status = 'cancelled' where id = target_order;
   return true;
