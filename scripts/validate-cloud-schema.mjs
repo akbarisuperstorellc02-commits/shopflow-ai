@@ -42,6 +42,8 @@ assert.match(cloudClient, /\.rpc\('create_store'/i);
 assert.match(cloudClient, /storeId \+ ':product'/i);
 assert.match(cloudClient, /local-import: stock values are the current inventory snapshot/i);
 assert.ok(appClient.includes('cloudImportConfirm'), 'Initial cloud import must display a clear snapshot-overwrite warning.');
+assert.ok(appClient.includes('cloudImportConfirm:()=>t(\'cloudImportConfirm\')'), 'Cloud import confirmation must use the active interface language.');
+assert.ok(cloudClient.includes('cloudImportConfirm?.()'), 'Cloud import must request the localized confirmation from the app bridge.');
 assert.ok(!appClient.includes('repeatable upload'), 'The UI must not describe the initial snapshot import as routine/repeatable sync.');
 assert.match(cloudClient, /saveMap\(map\); \/\//i);
 assert.match(cloudClient, /create_order_atomic/i);
