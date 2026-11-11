@@ -15,7 +15,7 @@ This document describes the current application's intended data flow. It is oper
 - Authentication and cloud data are handled by that operator's Supabase project under its configuration and policies.
 - The browser client must never receive a service-role key, secret API key, database password or other privileged credential.
 - Cloud uploads and downloads are initiated by explicit application actions; the current implementation is not realtime synchronization.
-- Cloud pull replaces matching local product records and settings after confirmation, preserves local-only records, and skips unsupported multi-item orders.
+- Cloud pull replaces matching local product records and settings after confirmation, preserves local-only records, and imports every line of multi-item orders.
 - The initial import is a snapshot operation and should not be repeated as a normal synchronization action.
 
 ## Operator responsibilities
