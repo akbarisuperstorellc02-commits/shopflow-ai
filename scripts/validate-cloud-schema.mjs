@@ -64,6 +64,9 @@ assert.match(appClient, /data\.items|Array\.isArray\(o\.items\)/, 'Backup restor
 assert.match(cloudClient, /cancel_order_atomic/i);
 assert.match(cloudClient, /storeId \+ ':order:' \+ String\(orderId\)/i, 'Cloud cancellation must resolve locally mapped order IDs.');
 assert.match(cloudClient, /return data === true/i, 'Cloud cancellation must distinguish already-cancelled orders.');
+assert.match(cloudClient, /async function cancelCloudOrder\(orderId, cloudId\)/, 'Cloud cancellation must accept a portable cloud order UUID.');
+assert.match(appClient, /cancelOrder\(o\.id,o\.cloudId\)/, 'The UI must pass the stored cloud UUID when cancelling imported orders.');
+assert.match(appClient, /cloudOrder:o\.cloudOrder===true/, 'Backup restore must preserve cloud-backed order status.');
 assert.match(appClient, /if\(!cancelled\)\{toast\(/i, 'The UI must not restore stock when a cloud order was already cancelled.');
 assert.match(appClient, /cancel\.dataset\.busy==='true'/i, 'Order cancellation must block duplicate clicks.');
 assert.match(cloudClient, /upsertCloudProduct/i);
