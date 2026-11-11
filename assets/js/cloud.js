@@ -157,7 +157,10 @@ async function deleteCloudProduct(productId) {
   const map = loadMap();
   const id = map[storeId + ':product:' + String(productId)];
   if (!id) return false;
-  const { error } = await client.from('products').delete().eq('id', id).eq('store_id', storeId);
+  // Keep a tombstone so every browser can learn about the deletion on its next pull.
+  const { error } = await client.from('products')
+    .update({ archived_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .eq('id', id).eq('store_id', storeId);
   if (error) throw error;
   return true;
 }
@@ -191,7 +194,7 @@ async function pullCloudData() {
     if (key.startsWith(storeId + ':order:')) reverseOrders.set(value, key.slice((storeId + ':order:').length));
   }
   const [productResult, orderResult, settingsResult] = await Promise.all([
-    client.from('products').select('id,name,price,cost,stock,description,archived_at,updated_at').eq('store_id', storeId).is('archived_at', null).order('updated_at'),
+    client.from('products').select('id,name,price,cost,stock,description,archived_at,updated_at').eq('store_id', storeId).order('updated_at'),
     client.from('orders').select('id,order_number,customer_name,status,currency,subtotal,cost_total,items,notes,sold_at,updated_at').eq('store_id', storeId).order('sold_at'),
     client.from('store_settings').select('settings').eq('store_id', storeId).maybeSingle()
   ]);
@@ -199,7 +202,13 @@ async function pullCloudData() {
   const existingLocal = window.ShopFlowBridge.exportData().products || [];
   const usedLocalIds = new Set(existingLocal.map(product => String(product.id)));
   let nextLocalId = Date.now();
-  const products = (productResult.data || []).map(row => {
+  const deletedProductIds = [];
+  const products = (productResult.data || []).filter(row => {
+    if (!row.archived_at) return true;
+    const localId = reverseProducts.get(row.id);
+    if (localId && /^\\d+$/.test(String(localId))) deletedProductIds.push(Number(localId));
+    return false;
+  }).map(row => {
     let localId = reverseProducts.get(row.id);
     if (!localId || !/^\d+$/.test(String(localId))) {
       while (usedLocalIds.has(String(nextLocalId))) nextLocalId += 1;
@@ -236,7 +245,7 @@ async function pullCloudData() {
     });
   }
   saveMap(map);
-  return { products, orders, settings: settingsResult.data?.settings || null, skippedMultiLine };
+  return { products, orders, deletedProductIds, settings: settingsResult.data?.settings || null, skippedMultiLine };
 }
 window.ShopFlowCloud = { isReady: cloudReady, createOrder: createCloudOrder, cancelOrder: cancelCloudOrder, upsertProduct: upsertCloudProduct, deleteProduct: deleteCloudProduct, saveSettings: saveCloudSettings, pullData: pullCloudData };
 
