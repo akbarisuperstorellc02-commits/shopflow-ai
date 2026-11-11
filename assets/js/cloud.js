@@ -350,7 +350,7 @@ $('cloud-create-store').addEventListener('click', async () => {
   try { await createStore(); } catch (error) { message(error.message || 'Could not create store.', true); }
 });
 $('cloud-import').addEventListener('click', async () => {
-  if (!window.confirm('Import this browser’s products, orders and settings into the selected cloud store? Existing local data will not be deleted.')) return;
+  if (!window.confirm(window.ShopFlowBridge?.cloudImportConfirm?.() || 'Upload this browser’s initial cloud snapshot? Repeating it may overwrite cloud stock.')) return;
   $('cloud-import').disabled = true;
   try { await importLocalData(); } catch (error) { message(error.message || 'Import failed.', true); }
   finally { $('cloud-import').disabled = !stores.length; }
